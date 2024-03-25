@@ -1,7 +1,7 @@
 
 ---
 
-# Tarea Integradora 1 - Team VaLquiRia - Proyecto "Juego Uno"  
+# Tarea Integradora 1 - Equipo VaLquiRia - Proyecto "Juego Uno"  
 Universidad ICESI, Colombia / Computación y estructuras discretas - G.003 / 2024-1 - Tarea Integradora 1
 
 ---
