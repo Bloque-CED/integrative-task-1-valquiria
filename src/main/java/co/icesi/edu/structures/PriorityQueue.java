@@ -1,4 +1,4 @@
 package co.icesi.edu.structures;
 
-public class HashTables {
+public class PriorityQueue {
 }

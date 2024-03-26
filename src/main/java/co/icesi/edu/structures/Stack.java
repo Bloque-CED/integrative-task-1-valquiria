@@ -1,4 +1,4 @@
 package co.icesi.edu.structures;
 
-public class PriorityQueues {
+public class Stack {
 }
