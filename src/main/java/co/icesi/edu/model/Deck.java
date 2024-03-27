@@ -52,20 +52,20 @@ public class Deck {
         for (Card.Color color : Card.Color.values()) {
             for (int i = 1; i <= 9; i++) {
                 for (int j = 0; j < (i == 0 ? 1 : 2); j++) {
-                    cards.add(new Card(color, i));
+                    cards.add(new Card(color, i, null));
                 }
             }
         }
 
         //cartas especiales
         for (int i = 0; i < 8; i++) {
-            cards.add(new Card(Card.Color.NONE, Card.SpecialType.DRAW_TWO)); // Roba dos
-            cards.add(new Card(Card.Color.NONE, Card.SpecialType.REVERSE));   // Cambio de sentido
-            cards.add(new Card(Card.Color.NONE, Card.SpecialType.SKIP));      // Salto
+            cards.add(new Card(Card.Color.NONE, 0, Card.SpecialType.DRAW_TWO)); // Roba dos
+            cards.add(new Card(Card.Color.NONE, 0,  Card.SpecialType.REVERSE));   // Cambio de sentido
+            cards.add(new Card(Card.Color.NONE, 0, Card.SpecialType.SKIP));      // Salto
         }
         for (int i = 0; i < 4; i++) {
-            cards.add(new Card(Card.Color.NONE, Card.SpecialType.WILD));               // Cambio de color
-            cards.add(new Card(Card.Color.NONE, Card.SpecialType.WILD_DRAW_FOUR));     // Roba cuatro
+            cards.add(new Card(Card.Color.NONE, 0, Card.SpecialType.WILD));               // Cambio de color
+            cards.add(new Card(Card.Color.NONE, 0, Card.SpecialType.WILD_DRAW_FOUR));     // Roba cuatro
         }
     }
 
