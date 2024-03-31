@@ -1,61 +1,110 @@
 package co.icesi.edu.model;
 
-import co.icesi.edu.structures.Queues;
+import co.icesi.edu.structures.Queue;
+import co.icesi.edu.structures.HashTable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
     private String name;
-    private Queues<Card> cards;
+    private Queue<String> hand;
+    private HashTable<String, Card> cardReferenceTable; //
 
-    public Player(String name, Queues<Card> cards) {
+    public Player(String name, HashTable<String, Card> cardReferenceTable) {
         this.name = name;
-        this.cards = cards;
-    }
-
-    //Agregar una carta al mazo del jugador
-    public void addCard(Card newCard){
-        cards.enqueue(newCard);
-    }
-
-    // Método para verificar si el jugador puede jugar la carta que tiene
-    //Se comento para poder subirlo ya que aun no se han implementado los metodos de la carta
-    public boolean canPlay(Card card) {
-        Card actualCard = cards.peek();
-
-        /*if(actualCard.getColor() == card.getColor() ||
-                actualCard.getNumber() == card.getNumber() ||
-                actualCard.getType() == card.getType()){
-            return true;
-        } else if(!actualCard.getType().equals("NORMAL")){
-            return true;
-        }*/
-        return false;
-    }
-
-    //Elimina la carta jugada, simpre jugaria la primer carta del mazo
-    public void playCard(){
-        if(canPlay(cards.peek())){
-            cards.dequeue();
+        this.hand = new Queue<>();
+        if (cardReferenceTable == null) {
+            throw new IllegalArgumentException("cardReferenceTable no puede ser null");
         }
-    }
-
-    //Indica si el jugador ya no tiene cartas, de esta forma gana
-    public boolean isWinner(){
-        return cards.isEmpty();
+        this.cardReferenceTable = cardReferenceTable;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void addCardToHand(Card card) {
+        if (card == null) {
+            throw new IllegalArgumentException("La carta no puede ser null");
+        }
+        String cardId = card.getId(); //
+        hand.enqueue(cardId);
+        //System.out.println("Carta agregada a la mano: " + cardId);
     }
 
-    public Queues<Card> getCards() {
+
+
+    public boolean removeCardFromHand(Card card) {
+        for (String cardId : hand) {
+            Card handCard = cardReferenceTable.get(cardId);
+            if (handCard != null && handCard.equals(card)) {
+                hand.remove(cardId);
+                return true;
+            }
+        }
+        return false; //
+    }
+
+    public int getHandSize() {
+        return hand.size();
+    }
+
+    public boolean hasCard(String cardId) {
+        return hand.contains(cardId);
+    }
+
+    //
+    public boolean hasPlayableCard(Card topCard, Card.Color currentColor) {
+        for (String cardId : hand) {
+            Card card = cardReferenceTable.get(cardId);
+            if (card != null && card.isPlayable(topCard, currentColor)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String playCard(Card topCard, Card.Color currentColor, int cardIndex) {
+        if (cardIndex < 0 || cardIndex >= hand.size()) {
+            return null;
+        }
+
+        String cardId = hand.get(cardIndex);
+        Card cardToPlay = cardReferenceTable.get(cardId);
+        if (cardToPlay == null || !cardToPlay.isPlayable(topCard, currentColor)) {
+            return null;
+        }
+
+        hand.remove(cardId);
+        return cardId;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(name + "'s hand: ");
+        for (String cardId : hand) {
+            Card card = cardReferenceTable.get(cardId);
+            if (card != null) {
+                sb.append(card.toString()).append(", ");
+            }
+        }
+        if (sb.length() > 2) {
+            sb.delete(sb.length() - 2, sb.length()); //
+        }
+        return sb.toString();
+    }
+
+
+
+    public List<Card> getHand() {
+        List<Card> cards = new ArrayList<>();
+        for (String cardId : hand) {
+            Card card = cardReferenceTable.get(cardId);
+            if (card != null) {
+                cards.add(card);
+            }
+        }
         return cards;
     }
 
-    public void setCards(Queues<Card> cards) {
-        this.cards = cards;
-    }
 }

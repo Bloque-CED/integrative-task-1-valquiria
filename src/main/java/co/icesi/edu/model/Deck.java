@@ -1,5 +1,136 @@
 package co.icesi.edu.model;
 
+import co.icesi.edu.structures.Stack;
+import co.icesi.edu.structures.HashTable;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+public class Deck {
+    private Stack<String> drawPile;
+    private Stack<String> discardPile;
+    private HashTable<String, Card> cardTable;
+
+    public Deck(HashTable<String, Card> cardTable) {
+        this.drawPile = new Stack<>();
+        this.discardPile = new Stack<>();
+        this.cardTable = cardTable;
+        initializeDrawPile();
+    }
+
+    private void initializeDrawPile() {
+        // Creamos las cartas normales
+        for (Card.Color color : Card.Color.values()) {
+            if (color != Card.Color.NONE) {
+                for (int number = 0; number <= 9; number++) {
+                    Card card = new Card(color, number, Card.SpecialType.NONE);
+                    String cardId = card.getId();
+                    cardTable.put(cardId, card);
+                    drawPile.push(cardId);
+                    drawPile.push(cardId);
+                }
+            }
+        }
+
+        //
+        for (Card.Color color : Card.Color.values()) {
+            if (color != Card.Color.NONE) {
+                for (int i = 0; i < 2; i++) {
+                    Card drawTwoCard = new Card(color, -1, Card.SpecialType.DRAW_TWO);
+                    String drawTwoCardId = drawTwoCard.getId();
+                    cardTable.put(drawTwoCardId, drawTwoCard);
+                    drawPile.push(drawTwoCardId);
+
+                    Card reverseCard = new Card(color, -1, Card.SpecialType.REVERSE);
+                    String reverseCardId = reverseCard.getId();
+                    cardTable.put(reverseCardId, reverseCard);
+                    drawPile.push(reverseCardId);
+
+                    Card skipCard = new Card(color, -1, Card.SpecialType.SKIP);
+                    String skipCardId = skipCard.getId();
+                    cardTable.put(skipCardId, skipCard);
+                    drawPile.push(skipCardId);
+                }
+            }
+        }
+
+        for (int i = 0; i < 4; i++) {
+            Card wildCard = new Card(Card.Color.NONE, -1, Card.SpecialType.WILD);
+            String wildCardId = wildCard.getId();
+            cardTable.put(wildCardId, wildCard);
+            drawPile.push(wildCardId);
+
+        }
+
+        shuffleStack(drawPile);
+    }
+
+    public void shuffleStack(Stack<String> stack) {
+        List<String> tempList = new ArrayList<>(stack.toList());
+        Collections.shuffle(tempList, new Random());
+        stack.clear();
+        for (String cardId : tempList) {
+            stack.push(cardId);
+        }
+    }
+
+    public Card drawCard() {
+        if (drawPile.isEmpty()) {
+            refillDrawPileFromDiscardPile();
+            if (drawPile.isEmpty()) {
+                throw new RuntimeException("El mazo de robar está vacío incluso después de intentar rellenarlo.");
+            }
+        }
+        String cardId = drawPile.pop();
+        Card card = cardTable.get(cardId);
+        if (card == null) {
+            throw new IllegalStateException("Se intentó sacar una carta nula del mazo.");
+        }
+        return card;
+    }
+
+    public void refillDrawPileFromDiscardPile() {
+        while (!discardPile.isEmpty()) {
+            drawPile.push(discardPile.pop());
+        }
+        shuffleStack(drawPile);
+    }
+
+    public void discardCard(Card card) {
+        discardPile.push(card.getId());
+    }
+
+    public Card topDiscardCard() {
+        if (!discardPile.isEmpty()) {
+            String cardId = discardPile.peek();
+            return cardTable.get(cardId);
+        }
+        return null;
+    }
+
+    public int getDrawPileSize() {
+        return drawPile.size();
+    }
+
+    public boolean isDrawPileEmpty() {
+        return drawPile.isEmpty();
+    }
+
+    public List<String> stackToList(Stack<String> stack) {
+        List<String> list = new ArrayList<>();
+        for (String cardId : stack) {
+            list.add(cardId);
+        }
+        return list;
+    }
+}
+
+
+
+/*package co.icesi.edu.model;
+
 //------------------------------------------------------------------------------------------------//
 
 import java.util.ArrayList;
@@ -45,22 +176,27 @@ public class Deck {
 
     //para inicializar el mazo de cartas
     public void initializeDeck() {
-        //mazo de 108 cartas (76 cartas normales + 32 cartas especiales)
+        // Mazo de 108 cartas (76 cartas normales + 32 cartas especiales)
 
-        //cartas normales
-        //19 cartas de cada color (salvo del 0 que es solo una)
+        // Cartas normales
+        // 19 cartas de cada color (salvo del 0 que es solo una)
         for (Card.Color color : Card.Color.values()) {
-            for (int i = 1; i <= 9; i++) {
-                for (int j = 0; j < (i == 0 ? 1 : 2); j++) {
-                    cards.add(new Card(color, i, null));
+            for (int i = 0; i <= 9; i++) {
+                // Se agrega una sola carta del número 0 por cada color
+                if (i == 0) {
+                    cards.add(new Card(color, i, Card.SpecialType.NONE));
+                } else {
+                    // Se agregan dos cartas de cada número del 1 al 9 por cada color
+                    cards.add(new Card(color, i, Card.SpecialType.NONE));
+                    cards.add(new Card(color, i, Card.SpecialType.NONE));
                 }
             }
         }
 
-        //cartas especiales
+        // Cartas especiales
         for (int i = 0; i < 8; i++) {
             cards.add(new Card(Card.Color.NONE, 0, Card.SpecialType.DRAW_TWO)); // Roba dos
-            cards.add(new Card(Card.Color.NONE, 0,  Card.SpecialType.REVERSE));   // Cambio de sentido
+            cards.add(new Card(Card.Color.NONE, 0, Card.SpecialType.REVERSE));   // Cambio de sentido
             cards.add(new Card(Card.Color.NONE, 0, Card.SpecialType.SKIP));      // Salto
         }
         for (int i = 0; i < 4; i++) {
@@ -68,6 +204,7 @@ public class Deck {
             cards.add(new Card(Card.Color.NONE, 0, Card.SpecialType.WILD_DRAW_FOUR));     // Roba cuatro
         }
     }
+
 
     //para mezclar las cartas en el mazo
     public void shuffleDeck() {
@@ -106,4 +243,6 @@ public class Deck {
 }
 
 //------------------------------------------------------------------------------------------------//
+
+ */
 
