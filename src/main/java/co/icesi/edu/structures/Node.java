@@ -1,20 +1,22 @@
 package co.icesi.edu.structures;
 
 public class Node<T> {
-    private T element;
+    private T data;
     private Node<T> next;
 
-    public Node(T element) {
-        this.element = element;
-        next = null;
+    // Constructor
+    public Node(T data) {
+        this.data = data;
+        this.next = null;
     }
 
-    public T getElement() {
-        return element;
+    // Getters y setters
+    public T getData() {
+        return data;
     }
 
-    public void setElement(T element) {
-        this.element = element;
+    public void setData(T data) {
+        this.data = data;
     }
 
     public Node<T> getNext() {
