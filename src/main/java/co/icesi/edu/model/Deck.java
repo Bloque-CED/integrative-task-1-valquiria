@@ -21,18 +21,30 @@ public class Deck {
     }
 
     private void initializeDrawPile() {
+
+        List<String> listCards = new ArrayList<String>();
+
         // Creamos las cartas normales
         for (Card.Color color : Card.Color.values()) {
             if (color != Card.Color.NONE) {
                 for (int number = 0; number <= 9; number++) {
-                    Card card = new Card(color, number, Card.SpecialType.NONE);
-                    String cardId = card.getId();
-                    cardTable.put(cardId, card);
-                    drawPile.push(cardId);
-                    drawPile.push(cardId);
+                    Card card1 = new Card(color, number, Card.SpecialType.NONE);
+                    Card card2 = new Card(color, number, Card.SpecialType.NONE);
+                    String cardId1 = card1.getId();
+                    String cardId2 = card2.getId();
+                    cardTable.put(cardId1, card1);
+                    cardTable.put(cardId2, card2);
+
+                    listCards.add(cardId1);
+                    listCards.add(cardId2);
+
+
+                    drawPile.push(cardId1);
+                    drawPile.push(cardId2);
                 }
             }
         }
+
 
         //
         for (Card.Color color : Card.Color.values()) {
@@ -57,23 +69,21 @@ public class Deck {
         }
 
         for (int i = 0; i < 4; i++) {
-            Card wildCard = new Card(Card.Color.NONE, -1, Card.SpecialType.WILD);
+            Card wildCard = new Card(Card.Color.NONE, -1, Card.SpecialType.CHANGE);
             String wildCardId = wildCard.getId();
             cardTable.put(wildCardId, wildCard);
             drawPile.push(wildCardId);
 
         }
 
-        shuffleStack(drawPile);
+
+
+        shuffleStack(listCards);
     }
 
-    public void shuffleStack(Stack<String> stack) {
-        List<String> tempList = new ArrayList<>(stack.toList());
-        Collections.shuffle(tempList, new Random());
-        stack.clear();
-        for (String cardId : tempList) {
-            stack.push(cardId);
-        }
+    public void shuffleStack(List<String> listCards) {
+        // Utiliza el método shuffle de la clase Collections para mezclar la lista de cartas
+        Collections.shuffle(listCards);
     }
 
     public Card drawCard() {
@@ -95,7 +105,7 @@ public class Deck {
         while (!discardPile.isEmpty()) {
             drawPile.push(discardPile.pop());
         }
-        shuffleStack(drawPile);
+        shuffleStack((List<String>) drawPile);
     }
 
     public void discardCard(Card card) {

@@ -9,7 +9,7 @@ public class Card {
     }
 
     public enum SpecialType {
-        DRAW_TWO, REVERSE, SKIP, WILD, NONE
+        DRAW_TWO, REVERSE, SKIP, CHANGE, NONE
     }
 
     private Color color;
@@ -60,5 +60,12 @@ public class Card {
             return this.number == topCard.number;
         }
         return false;
+    }
+
+    //-----------
+
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }

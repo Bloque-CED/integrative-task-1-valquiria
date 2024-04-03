@@ -12,7 +12,9 @@ public class GameController {
     private Deck deck;
     private List<Player> players;
     private Queue<Player> turnOrder;
-    private Card.Color currentColor;
+
+
+    private Card currentCard;
     private boolean isReverse = false;
 
     public GameController(List<String> playersNames, int numCards, HashTable<String, Card> cardReferenceTable) {
@@ -34,7 +36,9 @@ public class GameController {
         }
         Card initialCard = deck.drawCard();
         deck.discardCard(initialCard);
-        currentColor = initialCard.getColor();
+
+
+        currentCard = initialCard;
     }
 
 
@@ -45,7 +49,6 @@ public class GameController {
         } while (initialCard.getSpecialType() != Card.SpecialType.NONE);
 
         deck.discardCard(initialCard);
-        currentColor = initialCard.getColor();
     }
 
     public boolean playCard(Player player, int cardIndex, Card.Color chosenColor) {
@@ -64,7 +67,6 @@ public class GameController {
 
         player.removeCardFromHand(cardToPlay);
         deck.discardCard(cardToPlay);
-        currentColor = cardToPlay.getColor();
 
         if (player.getHandSize() == 0) {
             System.out.println(player.getName() + " ha ganado el juego!");
@@ -76,9 +78,8 @@ public class GameController {
     }
 
     private boolean isPlayable(Card card) {
-        return card.getColor() == currentColor || card.getColor() == Card.Color.NONE || card.getSpecialType() != Card.SpecialType.NONE;
+        return card.getColor() == currentCard.getColor()  || card.getSpecialType() != currentCard.getSpecialType() || card.getNumber() == currentCard.getNumber();
     }
-
     private void applyCardEffect(Card card, Card.Color chosenColor) {
         switch (card.getSpecialType()) {
             case DRAW_TWO:
@@ -91,8 +92,8 @@ public class GameController {
             case SKIP:
                 getNextPlayer();
                 break;
-            case WILD:
-                //lógica elegir el color
+            case CHANGE:
+                //currentCard.setColor();
                 break;
         }
     }

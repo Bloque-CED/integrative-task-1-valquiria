@@ -68,7 +68,7 @@ public class Main {
                         int cardIndex = Integer.parseInt(scanner.nextLine()) - 1;
                         playedSuccessfully = gameController.playCard(player, cardIndex, null);
                         if (!playedSuccessfully) {
-                            System.out.println("No puedes jugar esa carta, elige otra o roba una del mazo (2).");
+                            System.out.println("No puedes jugar esa carta, elige otra (1) o roba una del mazo (2).");
                         }
                     } else if (action == 2) {
                         gameController.playerDrawCard(player);
