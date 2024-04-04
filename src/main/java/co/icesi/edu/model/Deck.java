@@ -8,22 +8,22 @@ import java.util.Collections;
 import java.util.List;
 
 public class Deck {
-    private Stack<String> drawPile;
-    private Stack<String> discardPile;
-    private HashTable<String, Card> cardTable;
+    private Stack<String> drawPile; //pilaDeRobo
+    private Stack<String> discardPile; //pilaDeDescarte
+    private HashTable<String, Card> cardTable; //tablaDeCartas
 
-    public Deck(HashTable<String, Card> cardTable) {
+    public Deck() {
         this.drawPile = new Stack<>();
         this.discardPile = new Stack<>();
-        this.cardTable = cardTable;
+        cardTable = new HashTable();
         initializeDrawPile();
     }
 
     private void initializeDrawPile() {
 
-        List<String> listCards = new ArrayList<String>();
+        List<String> listCards = new ArrayList<>();
 
-        // Creamos las cartas normales
+        // cartas normales
         for (Card.Color color : Card.Color.values()) {
             if (color != Card.Color.NONE) {
                 for (int number = 0; number <= 9; number++) {
@@ -36,9 +36,6 @@ public class Deck {
 
                     listCards.add(cardId1);
                     listCards.add(cardId2);
-
-                    drawPile.push(cardId1);
-                    drawPile.push(cardId2);
                 }
             }
         }
@@ -53,8 +50,6 @@ public class Deck {
                     String drawTwoCardId2 = drawTwoCard2.getId();
                     cardTable.put(drawTwoCardId1, drawTwoCard1);
                     cardTable.put(drawTwoCardId2, drawTwoCard2);
-                    drawPile.push(drawTwoCardId1);
-                    drawPile.push(drawTwoCardId2);
 
                     listCards.add(drawTwoCardId1);
                     listCards.add(drawTwoCardId2);
@@ -65,8 +60,6 @@ public class Deck {
                     String reverseCardId2 = reverseCard2.getId();
                     cardTable.put(reverseCardId1, reverseCard1);
                     cardTable.put(reverseCardId2, reverseCard2);
-                    drawPile.push(reverseCardId1);
-                    drawPile.push(reverseCardId2);
 
                     listCards.add(reverseCardId1);
                     listCards.add(reverseCardId2);
@@ -77,8 +70,6 @@ public class Deck {
                     String skipCardId2 = skipCard2.getId();
                     cardTable.put(skipCardId1, skipCard1);
                     cardTable.put(skipCardId2, skipCard2);
-                    drawPile.push(skipCardId1);
-                    drawPile.push(skipCardId2);
 
                     listCards.add(skipCardId1);
                     listCards.add(skipCardId2);
@@ -90,68 +81,21 @@ public class Deck {
             Card wildCard = new Card(Card.Color.NONE, -1, Card.SpecialType.CHANGE);
             String wildCardId = wildCard.getId();
             cardTable.put(wildCardId, wildCard);
-            drawPile.push(wildCardId);
+
             listCards.add(wildCardId);
         }
 
-        shuffleStack(listCards);
+        shuffleStack(listCards); // se revuelven todas las cartas que se crearon en orden
+
     }
 
     public void shuffleStack(List<String> listCards) {
-        // Utiliza el método shuffle de la clase Collections para mezclar la lista de cartas
         Collections.shuffle(listCards);
     }
 
-    public Card drawCard() {
-        if (drawPile.isEmpty()) {
-            refillDrawPileFromDiscardPile();
-            if (drawPile.isEmpty()) {
-                throw new RuntimeException("El mazo de robar está vacío incluso después de intentar rellenarlo.");
-            }
-        }
-        String cardId = drawPile.pop();
-        Card card = cardTable.get(cardId);
-        if (card == null) {
-            throw new IllegalStateException("Se intentó sacar una carta nula del mazo.");
-        }
-        return card;
-    }
-
-    public void refillDrawPileFromDiscardPile() {
-        while (!discardPile.isEmpty()) {
-            drawPile.push(discardPile.pop());
-        }
-        shuffleStack((List<String>) drawPile);
-    }
-
-    public void discardCard(Card card) {
-        discardPile.push(card.getId());
-    }
-
-    public Card topDiscardCard() {
-        if (!discardPile.isEmpty()) {
-            String cardId = discardPile.peek();
-            return cardTable.get(cardId);
-        }
-        return null;
-    }
-
-    public int getDrawPileSize() {
-        return drawPile.size();
-    }
-
-    public boolean isDrawPileEmpty() {
-        return drawPile.isEmpty();
-    }
-
-    public List<String> stackToList(Stack<String> stack) {
-        List<String> list = new ArrayList<>();
-        for (String cardId : stack) {
-            list.add(cardId);
-        }
-        return list;
-    }
 }
+
+
 
 
 

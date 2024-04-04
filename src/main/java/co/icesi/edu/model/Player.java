@@ -1,110 +1,54 @@
 package co.icesi.edu.model;
 
-import co.icesi.edu.structures.Queue;
-import co.icesi.edu.structures.HashTable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
     private String name;
-    private Queue<String> hand;
-    private HashTable<String, Card> cardReferenceTable; //
+    private List<String> hand;
 
-    public Player(String name, HashTable<String, Card> cardReferenceTable) {
+    public Player(String name) {
         this.name = name;
-        this.hand = new Queue<>();
-        if (cardReferenceTable == null) {
-            throw new IllegalArgumentException("cardReferenceTable no puede ser null");
-        }
-        this.cardReferenceTable = cardReferenceTable;
+        this.hand = new ArrayList<>();
     }
 
     public String getName() {
         return name;
     }
 
-    public void addCardToHand(Card card) {
-        if (card == null) {
-            throw new IllegalArgumentException("La carta no puede ser null");
+    // Añade el ID de una carta a la mano del jugador
+    public void addCardToHand(String cardId) {
+        if (cardId == null || cardId.trim().isEmpty()) {
+            throw new IllegalArgumentException("El ID de la carta no puede ser null o vacío");
         }
-        String cardId = card.getId(); //
-        hand.enqueue(cardId);
-        //System.out.println("Carta agregada a la mano: " + cardId);
+        hand.add(cardId);
     }
 
-
-
-    public boolean removeCardFromHand(Card card) {
-        for (String cardId : hand) {
-            Card handCard = cardReferenceTable.get(cardId);
-            if (handCard != null && handCard.equals(card)) {
-                hand.remove(cardId);
-                return true;
-            }
-        }
-        return false; //
+    // Elimina el ID de una carta de la mano del jugador, basándose en la igualdad del ID
+    public boolean removeCardFromHand(String cardId) {
+        return hand.remove(cardId);
     }
 
+    // Devuelve el tamaño de la mano del jugador
     public int getHandSize() {
         return hand.size();
-    }
-
-    public boolean hasCard(String cardId) {
-        return hand.contains(cardId);
-    }
-
-    //
-    public boolean hasPlayableCard(Card topCard, Card.Color currentColor) {
-        for (String cardId : hand) {
-            Card card = cardReferenceTable.get(cardId);
-            if (card != null && card.isPlayable(topCard, currentColor)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public String playCard(Card topCard, Card.Color currentColor, int cardIndex) {
-        if (cardIndex < 0 || cardIndex >= hand.size()) {
-            return null;
-        }
-
-        String cardId = hand.get(cardIndex);
-        Card cardToPlay = cardReferenceTable.get(cardId);
-        if (cardToPlay == null || !cardToPlay.isPlayable(topCard, currentColor)) {
-            return null;
-        }
-
-        hand.remove(cardId);
-        return cardId;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(name + "'s hand: ");
         for (String cardId : hand) {
-            Card card = cardReferenceTable.get(cardId);
-            if (card != null) {
-                sb.append(card.toString()).append(", ");
-            }
+            sb.append(cardId).append(", ");
         }
-        if (sb.length() > 2) {
-            sb.delete(sb.length() - 2, sb.length()); //
+        // Elimina la última coma y espacio si la mano no está vacía
+        if (!hand.isEmpty()) {
+            sb.delete(sb.length() - 2, sb.length());
         }
         return sb.toString();
     }
 
-
-
-    public List<Card> getHand() {
-        List<Card> cards = new ArrayList<>();
-        for (String cardId : hand) {
-            Card card = cardReferenceTable.get(cardId);
-            if (card != null) {
-                cards.add(card);
-            }
-        }
-        return cards;
+    // Devuelve la mano del jugador como una lista de IDs de cartas
+    public List<String> getHand() {
+        return new ArrayList<>(hand); // Devuelve una copia de la mano para evitar modificaciones externas
     }
-
 }

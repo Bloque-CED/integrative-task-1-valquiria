@@ -1,6 +1,20 @@
 package co.icesi.edu.ui;
 
 import co.icesi.edu.model.GameController;
+
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        GameController gameController = new GameController(); //
+    }
+}
+
+
+/*package co.icesi.edu.ui;
+
+import co.icesi.edu.model.GameController;
 import co.icesi.edu.model.Player;
 import co.icesi.edu.model.Card;
 import co.icesi.edu.structures.HashTable;
@@ -90,3 +104,5 @@ public class Main {
         scanner.close();
     }
 }
+
+ */

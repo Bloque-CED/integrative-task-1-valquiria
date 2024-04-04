@@ -1,5 +1,15 @@
 package co.icesi.edu.model;
 
+public class GameController {
+    private Deck deck;
+    public GameController(){
+        deck = new Deck();
+    }
+
+}
+
+/*package co.icesi.edu.model;
+
 import co.icesi.edu.structures.HashTable;
 import co.icesi.edu.structures.PriorityQueue;
 import co.icesi.edu.structures.Queue;
@@ -17,7 +27,7 @@ public class GameController {
     private Card currentCard;
     private boolean isReverse = false;
 
-    public GameController(List<String> playersNames, int numCards, HashTable<String, Card> cardReferenceTable) {
+    public GameController(List<String> playersNames, int numPlayers) {
         deck = new Deck(cardReferenceTable);
         players = new ArrayList<>();
         for (String name : playersNames) {
@@ -170,3 +180,5 @@ public class GameController {
     }
 
 }
+
+ */

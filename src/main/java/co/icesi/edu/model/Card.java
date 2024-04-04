@@ -41,6 +41,10 @@ public class Card {
         return specialType;
     }
 
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     @Override
     public String toString() {
         if (specialType != SpecialType.NONE) {
@@ -48,24 +52,5 @@ public class Card {
         } else {
             return "Number: " + number + ", Color: " + color;
         }
-    }
-
-
-    //
-    public boolean isPlayable(Card topCard, Card.Color currentColor) {
-        if (this.color == currentColor || this.color == Color.NONE || this.specialType != SpecialType.NONE) {
-            return true;
-        }
-        if (this.specialType == SpecialType.NONE && topCard.specialType == SpecialType.NONE) {
-            return this.number == topCard.number;
-        }
-        return false;
-    }
-
-    //-----------
-
-
-    public void setColor(Color color) {
-        this.color = color;
     }
 }
