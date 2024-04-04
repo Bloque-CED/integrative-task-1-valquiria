@@ -6,7 +6,6 @@ import co.icesi.edu.structures.HashTable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class Deck {
     private Stack<String> drawPile;
@@ -38,32 +37,51 @@ public class Deck {
                     listCards.add(cardId1);
                     listCards.add(cardId2);
 
-
                     drawPile.push(cardId1);
                     drawPile.push(cardId2);
                 }
             }
         }
 
-
         //
         for (Card.Color color : Card.Color.values()) {
             if (color != Card.Color.NONE) {
                 for (int i = 0; i < 2; i++) {
-                    Card drawTwoCard = new Card(color, -1, Card.SpecialType.DRAW_TWO);
-                    String drawTwoCardId = drawTwoCard.getId();
-                    cardTable.put(drawTwoCardId, drawTwoCard);
-                    drawPile.push(drawTwoCardId);
+                    Card drawTwoCard1 = new Card(color, -1, Card.SpecialType.DRAW_TWO);
+                    Card drawTwoCard2 = new Card(color, -1, Card.SpecialType.DRAW_TWO);
+                    String drawTwoCardId1 = drawTwoCard1.getId();
+                    String drawTwoCardId2 = drawTwoCard2.getId();
+                    cardTable.put(drawTwoCardId1, drawTwoCard1);
+                    cardTable.put(drawTwoCardId2, drawTwoCard2);
+                    drawPile.push(drawTwoCardId1);
+                    drawPile.push(drawTwoCardId2);
 
-                    Card reverseCard = new Card(color, -1, Card.SpecialType.REVERSE);
-                    String reverseCardId = reverseCard.getId();
-                    cardTable.put(reverseCardId, reverseCard);
-                    drawPile.push(reverseCardId);
+                    listCards.add(drawTwoCardId1);
+                    listCards.add(drawTwoCardId2);
 
-                    Card skipCard = new Card(color, -1, Card.SpecialType.SKIP);
-                    String skipCardId = skipCard.getId();
-                    cardTable.put(skipCardId, skipCard);
-                    drawPile.push(skipCardId);
+                    Card reverseCard1 = new Card(color, -1, Card.SpecialType.REVERSE);
+                    Card reverseCard2 = new Card(color, -1, Card.SpecialType.REVERSE);
+                    String reverseCardId1 = reverseCard1.getId();
+                    String reverseCardId2 = reverseCard2.getId();
+                    cardTable.put(reverseCardId1, reverseCard1);
+                    cardTable.put(reverseCardId2, reverseCard2);
+                    drawPile.push(reverseCardId1);
+                    drawPile.push(reverseCardId2);
+
+                    listCards.add(reverseCardId1);
+                    listCards.add(reverseCardId2);
+
+                    Card skipCard1 = new Card(color, -1, Card.SpecialType.SKIP);
+                    Card skipCard2 = new Card(color, -1, Card.SpecialType.SKIP);
+                    String skipCardId1 = skipCard1.getId();
+                    String skipCardId2 = skipCard2.getId();
+                    cardTable.put(skipCardId1, skipCard1);
+                    cardTable.put(skipCardId2, skipCard2);
+                    drawPile.push(skipCardId1);
+                    drawPile.push(skipCardId2);
+
+                    listCards.add(skipCardId1);
+                    listCards.add(skipCardId2);
                 }
             }
         }
@@ -73,10 +91,8 @@ public class Deck {
             String wildCardId = wildCard.getId();
             cardTable.put(wildCardId, wildCard);
             drawPile.push(wildCardId);
-
+            listCards.add(wildCardId);
         }
-
-
 
         shuffleStack(listCards);
     }
