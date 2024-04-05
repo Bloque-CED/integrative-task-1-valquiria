@@ -2,12 +2,33 @@ package co.icesi.edu.ui;
 
 import co.icesi.edu.model.GameController;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         GameController gameController = new GameController(); //
+
+
+        System.out.println("Bienvenido al juego UNO!");
+        System.out.print("Ingrese el número de jugadores (2-5): ");
+        int numPlayers = scanner.nextInt();
+        while (numPlayers < 2 || numPlayers > 5) {
+            System.out.println("Número inválido de jugadores. Por favor, ingrese un número entre 2 y 5.");
+            numPlayers = scanner.nextInt();
+        }
+        scanner.nextLine();
+
+        List<String> playerNames = new ArrayList<>();
+        for (int i = 0; i < numPlayers; i++) {
+            System.out.print("Ingrese el nombre del jugador " + (i + 1) + ": ");
+            String name = scanner.nextLine();
+            playerNames.add(name);
+        }
+        gameController.startGame(playerNames);
     }
 }
 

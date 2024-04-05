@@ -8,14 +8,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class Deck {
-    private Stack<String> drawPile; //pilaDeRobo
-    private Stack<String> discardPile; //pilaDeDescarte
+    private Stack<String> playDeck; //pilaDeJuego
+    private Stack<String> discardDeck; //pilaDeDescarte
     private HashTable<String, Card> cardTable; //tablaDeCartas
 
     public Deck() {
-        this.drawPile = new Stack<>();
-        this.discardPile = new Stack<>();
-        cardTable = new HashTable();
+        this.playDeck = new Stack<>();
+        this.discardDeck = new Stack<>();
+        cardTable = new HashTable<>();
         initializeDrawPile();
     }
 
@@ -29,8 +29,10 @@ public class Deck {
                 for (int number = 0; number <= 9; number++) {
                     Card card1 = new Card(color, number, Card.SpecialType.NONE);
                     Card card2 = new Card(color, number, Card.SpecialType.NONE);
+
                     String cardId1 = card1.getId();
                     String cardId2 = card2.getId();
+
                     cardTable.put(cardId1, card1);
                     cardTable.put(cardId2, card2);
 
@@ -44,42 +46,42 @@ public class Deck {
         for (Card.Color color : Card.Color.values()) {
             if (color != Card.Color.NONE) {
                 for (int i = 0; i < 2; i++) {
-                    Card drawTwoCard1 = new Card(color, -1, Card.SpecialType.DRAW_TWO);
-                    Card drawTwoCard2 = new Card(color, -1, Card.SpecialType.DRAW_TWO);
-                    String drawTwoCardId1 = drawTwoCard1.getId();
-                    String drawTwoCardId2 = drawTwoCard2.getId();
-                    cardTable.put(drawTwoCardId1, drawTwoCard1);
-                    cardTable.put(drawTwoCardId2, drawTwoCard2);
+                    Card drawTwoCard = new Card(color, -1, Card.SpecialType.DRAW_TWO);
 
-                    listCards.add(drawTwoCardId1);
-                    listCards.add(drawTwoCardId2);
+                    String drawTwoCardId = drawTwoCard.getId();
 
-                    Card reverseCard1 = new Card(color, -1, Card.SpecialType.REVERSE);
-                    Card reverseCard2 = new Card(color, -1, Card.SpecialType.REVERSE);
-                    String reverseCardId1 = reverseCard1.getId();
-                    String reverseCardId2 = reverseCard2.getId();
-                    cardTable.put(reverseCardId1, reverseCard1);
-                    cardTable.put(reverseCardId2, reverseCard2);
+                    cardTable.put(drawTwoCardId, drawTwoCard);
 
-                    listCards.add(reverseCardId1);
-                    listCards.add(reverseCardId2);
+                    listCards.add(drawTwoCardId);
 
-                    Card skipCard1 = new Card(color, -1, Card.SpecialType.SKIP);
-                    Card skipCard2 = new Card(color, -1, Card.SpecialType.SKIP);
-                    String skipCardId1 = skipCard1.getId();
-                    String skipCardId2 = skipCard2.getId();
-                    cardTable.put(skipCardId1, skipCard1);
-                    cardTable.put(skipCardId2, skipCard2);
 
-                    listCards.add(skipCardId1);
-                    listCards.add(skipCardId2);
+                    Card reverseCard = new Card(color, -1, Card.SpecialType.REVERSE);
+
+                    String reverseCardId = reverseCard.getId();
+
+                    cardTable.put(reverseCardId, reverseCard);
+
+                    listCards.add(reverseCardId);
+
+
+                    Card skipCard = new Card(color, -1, Card.SpecialType.SKIP);
+
+                    String skipCardId = skipCard.getId();
+
+                    cardTable.put(skipCardId, skipCard);
+
+
+                    listCards.add(skipCardId);
+
                 }
             }
         }
 
         for (int i = 0; i < 4; i++) {
             Card wildCard = new Card(Card.Color.NONE, -1, Card.SpecialType.CHANGE);
+
             String wildCardId = wildCard.getId();
+
             cardTable.put(wildCardId, wildCard);
 
             listCards.add(wildCardId);
@@ -87,10 +89,22 @@ public class Deck {
 
         shuffleStack(listCards); // se revuelven todas las cartas que se crearon en orden
 
+        for (String cardId : listCards) {   // Se agregan las cartas revueltas a las pila
+            discardDeck.push(cardId);
+        }
+
     }
 
     public void shuffleStack(List<String> listCards) {
         Collections.shuffle(listCards);
+    }
+
+    public Stack<String> getDiscardDeck() {
+        return discardDeck;
+    }
+
+    public Stack<String> getPlayDeck() {
+        return playDeck;
     }
 
 }

@@ -1,12 +1,59 @@
 package co.icesi.edu.model;
 
+import co.icesi.edu.structures.PriorityQueue;
+import co.icesi.edu.structures.Queue;
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameController {
     private Deck deck;
-    public GameController(){
+    private PriorityQueue<Player> playerQueue;
+
+    public GameController() {
         deck = new Deck();
+        playerQueue = new PriorityQueue<>();
     }
 
+    public void startGame(List<String> playerNames) {
+        // Lista para mantener a los jugadores después de crearlos
+        List<Player> players = new ArrayList<>();
+
+        // Crear objetos Player y añadirlos a la cola de prioridad y a la lista de jugadores
+        int priority = 1;
+        for (String name : playerNames) {
+            Player player = new Player(name);
+            playerQueue.enqueue(player, priority);
+            players.add(player);
+            priority++;
+        }
+
+        // Preparar las cartas para repartir
+        Queue<String> cardsToDeal = new Queue<>();
+        int totalCardsToDeal = players.size() * 7;
+        for (int i = 0; i < totalCardsToDeal; i++) {
+            String cardId = deck.getDiscardDeck().pop();
+            cardsToDeal.enqueue(cardId);
+        }
+
+        // Repartir las cartas a los jugadores
+        while (!cardsToDeal.isEmpty()) {
+            for (Player player : players) {
+                if (!cardsToDeal.isEmpty()) {
+                    String cardId = cardsToDeal.dequeue();
+                    player.addCardToHand(cardId);
+                }
+            }
+        }
+
+        // Sacar una carta para iniciar el mazo de juego
+        String initialCard = deck.getDiscardDeck().pop();
+        deck.getPlayDeck().push(initialCard);
+    }
+
+
+
 }
+
 
 /*package co.icesi.edu.model;
 
