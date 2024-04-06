@@ -2,16 +2,19 @@ package co.icesi.edu.model;
 
 import co.icesi.edu.structures.PriorityQueue;
 import co.icesi.edu.structures.Queue;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameController {
     private Deck deck;
     private PriorityQueue<Player> playerQueue;
+    private boolean gameOver;
 
-    public GameController() {
+    public GameController() throws Exception {
         deck = new Deck();
         playerQueue = new PriorityQueue<>();
+        gameOver = false;
     }
 
     public void startGame(List<String> playerNames) {
@@ -45,12 +48,144 @@ public class GameController {
             }
         }
 
-        // Sacar una carta para iniciar el mazo de juego
-        String initialCard = deck.getDiscardDeck().pop();
-        deck.getPlayDeck().push(initialCard);
+        // Recorrer el mazo de descarte hasta encontrar una carta con especialidad NONE
+        while (!deck.getDiscardDeck().isEmpty()) {
+            String cardId = deck.getDiscardDeck().peek(); // Obtener el ID de la carta sin eliminarla
+            Card card = deck.getCardTable().get(cardId);
+
+            if (card.getSpecialType() == Card.SpecialType.NONE) {
+                // Si la carta tiene especialidad NONE, añadirla al mazo de juego y salir del bucle
+                deck.getPlayDeck().push(deck.getDiscardDeck().pop());
+                break;
+            } else {
+                // Si la carta no tiene especialidad NONE, añadirla al mazo de juego y continuar recorriendo
+                deck.getPlayDeck().push(deck.getDiscardDeck().pop());
+            }
+        }
+
+    }
+
+    //---------------------------------------------------------------------------------------
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public String currentPlayer(){
+        return playerQueue.peek().getName();
+    }
+
+    public int handSizePlayer(){
+        return playerQueue.peek().getHand().size();
+    }
+
+    public String currentCard() {
+        String x = deck.getPlayDeck().peek();
+        return deck.cardForId(x);
+    }
+
+    public String currentPlayerCardList() {
+        List<String> list = playerQueue.peek().getHand();
+
+        String result = "";
+
+        for (int i = 0; i < list.size(); i++) {
+            result +=  i+1 + ".  " + deck.cardForId(list.get(i)) + "\n";
+        }
+
+        return result;
     }
 
 
+    //---------------------------------------------------------------------------------------
+
+    // Método para que un jugador juegue una carta
+    public boolean playCard(int cardIndex) {
+        boolean flag = false;
+
+        Player currentPlayer = playerQueue.peek();
+        System.out.println("YOOOOOOOOOOO"+ currentPlayer());
+        String cardId = currentPlayer.getHand().get(cardIndex);
+        Card playedCard = deck.getCardTable().get(cardId);
+
+        // Obtiene la carta en la cima de la pila de juego para comparar
+        String topCardId = deck.getPlayDeck().peek();
+        Card topCard = deck.getCardTable().get(topCardId);
+
+        // Comprueba si la carta es jugable
+        if (topCard.getSpecialType() == Card.SpecialType.NONE) {
+            if (playedCard.getColor() == topCard.getColor() || playedCard.getNumber() == topCard.getNumber()) {
+                // Mueve la carta al montón de descarte
+                currentPlayer.removeCardFromHand(cardId);
+                deck.getPlayDeck().push(cardId);
+
+                // Verifica si el juego ha terminado
+                gameOver = checkGameOver();
+            }
+            flag = true;
+            nextTurn();
+        }
+        return flag;
+    }
+
+    // Método para manejar el efecto de las cartas especiales
+    private void handleSpecialCardEffect(Card card) {
+        // Implementación de efectos basada en el tipo de carta especial
+        switch (card.getSpecialType()) {
+            case DRAW_TWO:
+                drawCard(2);
+                nextTurn();
+                break;
+            case REVERSE:
+                // Implementación específica
+                break;
+            case SKIP:
+                nextTurn();
+                break;
+            case CHANGE:
+                // Implementación específica
+                break;
+        }
+    }
+
+    // Método para pasar al siguiente turno
+    public void nextTurn() {
+        // Extrae al jugador actual de la cola de prioridad.
+        Player currentPlayer = playerQueue.dequeue();
+
+        // Calcula la nueva prioridad. Podría ser el tamaño actual de la cola + 1,
+        // asegurando que el jugador vuelve al final de la cola.
+        int newPriority = playerQueue.size() + 1;
+
+        // Vuelve a encolar al jugador con su nueva prioridad, colocándolo al final de la cola.
+        playerQueue.enqueue(currentPlayer, newPriority);
+    }
+
+
+    // Método para robar una carta del mazo
+    public void drawCard(int numberCards) {
+        Player currentPlayer = playerQueue.peek();
+        for (int i = 0; i < numberCards; i++) {
+            // Extraer una carta del mazo y añadirla a la mano del jugador actual
+            String drawnCardId = deck.getDiscardDeck().pop();
+            currentPlayer.addCardToHand(drawnCardId);
+        }
+        nextTurn();
+    }
+
+    // Método para verificar el fin del juego
+    private boolean checkGameOver() {
+        // Obtener al jugador actual de la cola de prioridad
+        Player currentPlayer = playerQueue.peek();
+
+        // Verificar si la mano del jugador actual está vacía
+        if (currentPlayer.getHand().isEmpty()) {
+            // Si la mano del jugador está vacía, el jugador ha ganado
+            gameOver = true;
+        }
+
+        return false; // El juego no ha terminado aún
+    }
 
 }
 

@@ -34,21 +34,11 @@ public class Player {
         return hand.size();
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(name + "'s hand: ");
-        for (String cardId : hand) {
-            sb.append(cardId).append(", ");
-        }
-        // Elimina la última coma y espacio si la mano no está vacía
-        if (!hand.isEmpty()) {
-            sb.delete(sb.length() - 2, sb.length());
-        }
-        return sb.toString();
-    }
 
     // Devuelve la mano del jugador como una lista de IDs de cartas
     public List<String> getHand() {
         return new ArrayList<>(hand); // Devuelve una copia de la mano para evitar modificaciones externas
     }
+
+
 }

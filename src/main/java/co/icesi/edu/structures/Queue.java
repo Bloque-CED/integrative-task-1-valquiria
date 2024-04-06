@@ -9,7 +9,7 @@ public class Queue<T> {
         this.rear = null;
     }
 
-    public void enqueue(T item) {
+    public void enqueue(T item) { //agregar
         Node<T> newNode = new Node<>(item);
         if (isEmpty()) {
             front = newNode;
@@ -20,7 +20,7 @@ public class Queue<T> {
         }
     }
 
-    public T dequeue() {
+    public T dequeue() { //eliminar
         if (isEmpty()) {
             throw new IllegalStateException("Queue is empty");
         }
@@ -32,7 +32,7 @@ public class Queue<T> {
         return item;
     }
 
-    public T peek() {
+    public T peek() { //ver
         if (isEmpty()) {
             throw new IllegalStateException("Queue is empty");
         }

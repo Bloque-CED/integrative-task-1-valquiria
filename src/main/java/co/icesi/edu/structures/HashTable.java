@@ -1,71 +1,85 @@
 package co.icesi.edu.structures;
 
-import java.util.HashMap;
-import java.util.Map;
-
 
 public class HashTable<K, V> {
-    private static final int INITIAL_CAPACITY = 108;
-    private static final double LOAD_FACTOR = 0.75;
-
+    private HashNode<K, V>[] table;
     private int size;
     private int capacity;
-    private Map<K, V>[] table;
 
     public HashTable() {
+        this.capacity = 20;
+        table = new HashNode[capacity];
         this.size = 0;
-        this.capacity = INITIAL_CAPACITY;
-        this.table = new Map[capacity];
-        for (int i = 0; i < capacity; i++) {
-            table[i] = new HashMap<>();
-        }
+    }
+
+    private int hash(K key) {
+
+        return Math.abs(key.hashCode()) % capacity;
     }
 
     public void put(K key, V value) {
-        if (size >= LOAD_FACTOR * capacity) {
-            resize();
+        int index = hash(key);
+        HashNode<K, V> newNode = new HashNode<>(key, value);
+
+        if (table[index] == null) {
+            table[index] = newNode;
+            size++;
+        } else {
+            HashNode<K, V> current = table[index];
+            while (current.next != null) {
+                if (current.key.equals(key)) {
+                    current.value = value; // Actualiza el valor si la clave ya existe
+                    return;
+                }
+                current = current.next;
+            }
+            if (current.key.equals(key)) {
+                current.value = value;
+            } else {
+                current.next = newNode;
+            }
         }
-        int index = getIndex(key);
-        table[index].put(key, value);
-        size++;
     }
 
     public V get(K key) {
-        int index = getIndex(key);
-        return table[index].get(key);
-    }
+        int index = hash(key);
+        HashNode<K, V> current = table[index];
 
-    public boolean containsKey(K key) {
-        int index = getIndex(key);
-        return table[index].containsKey(key);
+        while (current != null) {
+            if (current.key.equals(key)) {
+                return current.value;
+            }
+            current = current.next;
+        }
+        return null;
     }
 
     public void remove(K key) {
-        int index = getIndex(key);
-        table[index].remove(key);
-        size--;
+        int index = hash(key);
+        HashNode<K, V> current = table[index];
+        HashNode<K, V> prev = null;
+
+        while (current != null) {
+            if (current.key.equals(key)) {
+                if (prev != null) {
+                    prev.next = current.next;
+                } else {
+                    table[index] = current.next;
+                }
+                size--;
+                return;
+            }
+            prev = current;
+            current = current.next;
+        }
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
     }
 
     public int size() {
         return size;
     }
-
-    private int getIndex(K key) {
-        return Math.abs(key.hashCode() % capacity);
-    }
-
-    private void resize() {
-        capacity *= 2;
-        size = 0;
-        Map<K, V>[] oldTable = table;
-        table = new Map[capacity];
-        for (int i = 0; i < capacity; i++) {
-            table[i] = new HashMap<>();
-        }
-        for (Map<K, V> map : oldTable) {
-            for (Map.Entry<K, V> entry : map.entrySet()) {
-                put(entry.getKey(), entry.getValue());
-            }
-        }
-    }
 }
+

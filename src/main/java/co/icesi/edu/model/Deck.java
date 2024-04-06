@@ -12,14 +12,14 @@ public class Deck {
     private Stack<String> discardDeck; //pilaDeDescarte
     private HashTable<String, Card> cardTable; //tablaDeCartas
 
-    public Deck() {
+    public Deck() throws Exception {
         this.playDeck = new Stack<>();
         this.discardDeck = new Stack<>();
         cardTable = new HashTable<>();
         initializeDrawPile();
     }
 
-    private void initializeDrawPile() {
+    private void initializeDrawPile() throws Exception {
 
         List<String> listCards = new ArrayList<>();
 
@@ -107,6 +107,13 @@ public class Deck {
         return playDeck;
     }
 
+    public String cardForId(String idCard) {
+        return cardTable.get(idCard).toString();
+    }
+
+    public HashTable<String, Card> getCardTable() {
+        return cardTable;
+    }
 }
 
 

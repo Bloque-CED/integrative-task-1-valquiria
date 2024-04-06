@@ -7,13 +7,13 @@ public class Stack<T> {
         this.top = null;
     }
 
-    public void push(T item) {
+    public void push(T item) { //añadir
         Node<T> newNode = new Node<>(item);
         newNode.next = top;
         top = newNode;
     }
 
-    public T pop() {
+    public T pop() { //eliminar
         if (isEmpty()) {
             throw new IllegalStateException("Stack is empty");
         }
@@ -22,7 +22,7 @@ public class Stack<T> {
         return item;
     }
 
-    public T peek() {
+    public T peek() { //ver
         if (isEmpty()) {
             throw new IllegalStateException("Stack is empty");
         }
