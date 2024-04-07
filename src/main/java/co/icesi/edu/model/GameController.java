@@ -11,13 +11,13 @@ public class GameController {
     private PriorityQueue<Player> playerQueue;
     private boolean gameOver;
 
-    private boolean activespecialcard;
+    private boolean activeSpecialcard;
 
     public GameController() throws Exception {
         deck = new Deck();
         playerQueue = new PriorityQueue<>();
         gameOver = false;
-        activespecialcard = false;
+        activeSpecialcard = false;
     }
 
     public void startGame(List<String> playerNames) {
@@ -25,17 +25,18 @@ public class GameController {
         List<Player> players = new ArrayList<>();
 
         // Crear objetos Player y añadirlos a la cola de prioridad y a la lista de jugadores
-        int priority = playerNames.size();
+        int priority = 1; // Comenzar con la prioridad más baja
         for (String name : playerNames) {
             Player player = new Player(name);
             players.add(player);
             playerQueue.enqueue(player, priority);
-            priority--;
+            priority++; // Incrementar la prioridad para el próximo jugador
         }
+
 
         // Preparar las cartas para repartir
         Queue<String> cardsToDeal = new Queue<>();
-        int totalCardsToDeal = players.size() * 2;
+        int totalCardsToDeal = players.size() * 7;
         for (int i = 0; i < totalCardsToDeal; i++) {
             String cardId = deck.getDiscardDeck().pop();
             cardsToDeal.enqueue(cardId);
@@ -99,14 +100,14 @@ public class GameController {
         return result;
     }
 
-    public boolean isActivespecialcard() {
+    public boolean isActiveSpecialcard() {
         String topCardId = deck.getPlayDeck().peek();
         Card topCard = deck.getCardTable().get(topCardId);
 
         boolean flag = false;
 
         if (topCard.getSpecialType() == Card.SpecialType.DRAW_TWO || topCard.getSpecialType() == Card.SpecialType.SKIP) {
-            if (activespecialcard == true) {
+            if (activeSpecialcard == true) {
                 flag = true;
             } else {
                 flag = false;
@@ -140,7 +141,7 @@ public class GameController {
                 gameOver = checkGameOver();
                 flag = true;
             }
-        } else if (topCard.getSpecialType() != Card.SpecialType.CHANGE && topCard.getSpecialType() != Card.SpecialType.REVERSE) {
+        } else if (topCard.getSpecialType() != Card.SpecialType.CHANGE) {
             if(playedCard.getColor() == topCard.getColor() ) {
                 // Mueve la carta al montón de descarte
                 currentPlayer.removeCardFromHand(cardId);
@@ -149,7 +150,7 @@ public class GameController {
                 // Verifica si el juego ha terminado
                 gameOver = checkGameOver();
                 flag = true;
-                activespecialcard = true;
+                activeSpecialcard = true;
             }
         } else {
             flag = false;
@@ -172,8 +173,12 @@ public class GameController {
             case SKIP:
                 nextTurn();
                 break;
+            case REVERSE:
+                nextTurnNegative();
+                break;
+            case CHANGE:
         }
-        activespecialcard = false;
+        activeSpecialcard = false;
     }
 
     // Método para pasar al siguiente turno
@@ -200,7 +205,9 @@ public class GameController {
         playerQueue.enqueue(currentPlayer, 1);
     }
 
-
+    public void nextTurnNegative() {
+        //
+    }
 
 
     // Método para robar una carta del mazo
