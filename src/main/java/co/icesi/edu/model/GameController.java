@@ -10,14 +10,21 @@ public class GameController {
     private Deck deck;
     private PriorityQueue<Player> playerQueue;
     private boolean gameOver;
-
+    private boolean invert;
+    private Card.Color auxiliaryCard;
     private boolean activeSpecialcard;
+    private boolean changeColor;
+    private boolean changeColorController;
 
     public GameController() throws Exception {
         deck = new Deck();
         playerQueue = new PriorityQueue<>();
         gameOver = false;
         activeSpecialcard = false;
+        invert = false;
+        auxiliaryCard = null;
+        changeColor = false;
+        changeColorController = false;
     }
 
     public void startGame(List<String> playerNames) {
@@ -34,7 +41,7 @@ public class GameController {
         }
 
 
-        // Preparar las cartas para repartir
+        // Preparar las cartas para repartir MEDIANTE UNA COLA
         Queue<String> cardsToDeal = new Queue<>();
         int totalCardsToDeal = players.size() * 7;
         for (int i = 0; i < totalCardsToDeal; i++) {
@@ -88,6 +95,10 @@ public class GameController {
         return deck.cardForId(x);
     }
 
+    public boolean isChanged() {
+        return changeColor;
+    }
+
     public String currentPlayerCardList() {
         List<String> list = playerQueue.peek().getHand();
 
@@ -106,14 +117,34 @@ public class GameController {
 
         boolean flag = false;
 
-        if (topCard.getSpecialType() == Card.SpecialType.DRAW_TWO || topCard.getSpecialType() == Card.SpecialType.SKIP) {
-            if (activeSpecialcard == true) {
+        if (topCard.getSpecialType() != Card.SpecialType.NONE) {
+            if (activeSpecialcard) {
                 flag = true;
-            } else {
-                flag = false;
             }
         }
         return flag;
+    }
+
+
+    public void changedColor(int i) {
+        switch (i) {
+            case 1:
+                auxiliaryCard = Card.Color.BLUE;
+                break;
+            case 2:
+                auxiliaryCard = Card.Color.GREEN;
+                break;
+            case 3:
+                auxiliaryCard = Card.Color.RED;
+                break;
+            case 4:
+                auxiliaryCard = Card.Color.YELLOW;
+                break;
+
+        }
+        changeColor = false;
+        changeColorController = true;
+
     }
 
     //---------------------------------------------------------------------------------------
@@ -130,83 +161,102 @@ public class GameController {
         String topCardId = deck.getPlayDeck().peek();
         Card topCard = deck.getCardTable().get(topCardId);
 
-        // Comprueba si la carta es jugable
-        if (topCard.getSpecialType() == Card.SpecialType.NONE) {
-            if (playedCard.getColor() == topCard.getColor() || playedCard.getNumber() == topCard.getNumber()) {
-                // Mueve la carta al montón de descarte
-                currentPlayer.removeCardFromHand(cardId);
-                deck.getPlayDeck().push(cardId);
+        if (!changeColor && !changeColorController) {
+            auxiliaryCard = topCard.getColor();
+        }
 
-                // Verifica si el juego ha terminado
-                gameOver = checkGameOver();
-                flag = true;
-            }
-        } else if (topCard.getSpecialType() != Card.SpecialType.CHANGE) {
-            if(playedCard.getColor() == topCard.getColor() ) {
-                // Mueve la carta al montón de descarte
-                currentPlayer.removeCardFromHand(cardId);
-                deck.getPlayDeck().push(cardId);
+        // Identifica si es una carta de cambio de color
+        boolean isChangeCard = playedCard.getSpecialType() == Card.SpecialType.CHANGE;
 
-                // Verifica si el juego ha terminado
-                gameOver = checkGameOver();
-                flag = true;
+        // Comprueba si la carta es jugable según el color o el número para cartas normales
+        boolean canPlayNormalCard = playedCard.getSpecialType() == Card.SpecialType.NONE &&
+                (playedCard.getColor() == auxiliaryCard || playedCard.getNumber() == topCard.getNumber());
+
+        // Permite jugar cartas especiales si coinciden en color o tipo especial con la carta en el montón,
+        // excepto para las cartas de cambio de color, que siempre se pueden jugar.
+        boolean canPlaySpecialCard = playedCard.getSpecialType() != Card.SpecialType.NONE &&
+                (playedCard.getColor() == auxiliaryCard ||
+                        playedCard.getSpecialType() == topCard.getSpecialType());
+
+        // Combina las condiciones para determinar si la carta actual se puede jugar
+        if (isChangeCard || canPlayNormalCard || canPlaySpecialCard) {
+            // Mueve la carta al montón de descarte
+            currentPlayer.removeCardFromHand(cardId);
+            deck.getPlayDeck().push(cardId);
+
+            // Verifica si el juego ha terminado
+            gameOver = checkGameOver();
+            flag = true;
+            changeColorController = false;
+
+            // Activa efectos especiales si corresponde
+            if (playedCard.getSpecialType() != Card.SpecialType.NONE) {
                 activeSpecialcard = true;
+                if (isChangeCard) {
+                    changeColor = true;
+                }
             }
-        } else {
-            flag = false;
+            nextTurn();
         }
         return flag;
     }
 
+
+
+
+
+
     // Método para manejar el efecto de las cartas especiales
-    public void handleSpecialCardEffect() {
+    public String handleSpecialCardEffect() {
         // Obtiene la carta en la cima de la pila de juego para comparar
         String topCardId = deck.getPlayDeck().peek();
         Card topCard = deck.getCardTable().get(topCardId);
+
+        String message = ""; // Mensaje que se retornará
 
         // Implementación de efectos basada en el tipo de carta especial
         switch (topCard.getSpecialType()) {
             case DRAW_TWO:
                 drawCard(2);
                 nextTurn();
+                message = "Se activó una carta de +2 en ti. Se te agregaron 2 cartas y perdiste tu turno.";
                 break;
             case SKIP:
                 nextTurn();
+                message = "Se activó una carta de salto en ti. Perdiste tu turno.";
                 break;
             case REVERSE:
-                nextTurnNegative();
+                invert = !invert;
+                nextTurn();
+                nextTurn();
+                message = "Se activó una carta de reversa antes de ti. El orden de juego ha sido invertido. Espera tu nuevo turno";
                 break;
             case CHANGE:
+                message = "Se activó una carta de cambio de color. El color de la carta de cambio es: " + auxiliaryCard + ".";
+                break;
         }
         activeSpecialcard = false;
+        return message;
     }
+
 
     // Método para pasar al siguiente turno
     public void nextTurn() {
 
+        int i = playerQueue.size();
 
-        int size = playerQueue.size();
+        if (!invert) {
+            playerQueue.increasePriority();
 
-        List<Player> players = new ArrayList<>();
+            // Extrae al jugador actual de la cola de prioridad.
+            Player currentPlayer = playerQueue.dequeue();
 
-        for (int i = 0; i < size; i++) {
-            Player nextPlayer = playerQueue.dequeue();
-            players.add(nextPlayer);
+            // Vuelve a encolar al jugador actual con prioridad 1, colocándolo al final de la cola.
+            playerQueue.enqueue(currentPlayer, 1);
+
+        } else {
+            playerQueue.prioritizeLowest();
         }
-
-        for (Player nextPlayer : players) {
-            playerQueue.enqueue(nextPlayer, 1+size);
-        }
-
-        // Extrae al jugador actual de la cola de prioridad.
-        Player currentPlayer = playerQueue.dequeue();
-
-        // Vuelve a encolar al jugador actual con prioridad 1, colocándolo al final de la cola.
-        playerQueue.enqueue(currentPlayer, 1);
-    }
-
-    public void nextTurnNegative() {
-        //
     }
 
 

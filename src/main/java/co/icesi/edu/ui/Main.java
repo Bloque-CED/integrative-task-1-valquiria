@@ -20,7 +20,6 @@ public class Main {
         main.wellcome();
     }
 
-    //---------------------------------------------------------------------------------------
 
     public void wellcome() {
         System.out.println("Bienvenido al juego UNO!");
@@ -48,75 +47,94 @@ public class Main {
     }
 
     public void gameTurn() {
+        String actualPLayer = "";
+
+        //VALIDAR SI ALGUIEN GANO
+        if (gameController.isGameOver()) {
+            System.out.println("\n--------------------------------------------------");
+            System.out.println("HAS GANADO: " + actualPLayer + "!");
+            System.out.println("--------------------------------------------------");
+            return;
+        }
+        actualPLayer = gameController.currentPlayer();
+        actualPLayer = actualPLayer.toUpperCase();
+
         System.out.println("\n--------------------------------------------------");
-        System.out.println("Es el turno de " +  gameController.currentPlayer());
+        System.out.println("ES EL TURNO DE: " +  actualPLayer );
 
         if (gameController.isActiveSpecialcard()) {
-            gameController.handleSpecialCardEffect();
-            System.out.println("NO PUEDES JUGAR PORQUE TE BLOQUEARON 0 COMISTE 2");
+            String message = gameController.handleSpecialCardEffect();
+            System.out.println(message);
         }else {
             toPlay();
-            gameTurn();
         }
 
         gameTurn();
     }
 
     public void toPlay() {
-        while (!gameController.isGameOver()) {
-            int action = -1;
-            boolean playedSuccessfully = false;
-            do {
-                System.out.println("La carta en la cima del montón de descarte es: " + gameController.currentCard());
-                System.out.println("Tus cartas son: \n");
-                System.out.println(gameController.currentPlayerCardList());
+        int action = -1;
 
-                System.out.println("¿Qué acción te gustaría realizar?");
-                System.out.println("1. Jugar una carta");
-                System.out.println("2. Robar del mazo");
+        System.out.println("La carta en la cima del montón de descarte es: " + gameController.currentCard());
+        System.out.println("Tus cartas son: \n");
+        System.out.println(gameController.currentPlayerCardList());
+
+        System.out.println("¿Qué acción te gustaría realizar?");
+        System.out.println("1. Jugar una carta");
+        System.out.println("2. Robar del mazo");
+        System.out.print("   >");
+        action = scanner.nextInt();
+        scanner.nextLine();
+        while (action < 1 || action > 2) {
+            System.out.println("Número inválido. Por favor, ingrese un número entre 1 y 2.");
+            System.out.print("   >");
+            action = scanner.nextInt();
+            scanner.nextLine();
+        }
+
+        if (action == 1) {
+            System.out.print("Elige la carta que quieres jugar");
+            System.out.print("   >");
+            int cardIndex = scanner.nextInt() - 1;
+            scanner.nextLine();
+
+            while (cardIndex < 0 || cardIndex >= gameController.handSizePlayer()) {
+                System.out.println("Índice de carta inválido. Intentalo de nuevo");
                 System.out.print("   >");
-                action = scanner.nextInt();
+                cardIndex = scanner.nextInt() - 1;
                 scanner.nextLine();
-                while (action < 1 || action > 2) {
-                    System.out.println("Número inválido. Por favor, ingrese un número entre 1 y 2.");
+            }
+
+            if (!gameController.playCard(cardIndex)) {
+                System.out.println("No puedes jugar esa carta, elige otra (1) o roba una del mazo (2).");
+            }
+
+
+
+
+
+            if (gameController.isChanged()) {
+                System.out.println("A que color deseas cambiar la carta de Cambio de color?");
+                System.out.println("1. Azul,  2. Verde,  3. Rojo,  4. Amarillo");
+                System.out.print("   >");
+                int color = scanner.nextInt();
+                scanner.nextLine();
+                while (color < 1 || color > 4) {
+                    System.out.println("Número inválido. Por favor, ingrese un número entre 1 y 4.");
                     System.out.print("   >");
-                    action = scanner.nextInt();
+                    color = scanner.nextInt();
                     scanner.nextLine();
                 }
+                gameController.changedColor(color);
+            }
 
-                if (action == 1) {
-                    System.out.print("Elige la carta que quieres jugar");
-                    System.out.print("   >");
-                    int cardIndex = scanner.nextInt() - 1;
-                    scanner.nextLine();
 
-                    while (cardIndex < 0 || cardIndex >= gameController.handSizePlayer()) {
-                        System.out.println("Índice de carta inválido. Intentalo de nuevo");
-                        System.out.print("   >");
-                        cardIndex = scanner.nextInt() - 1;
-                        scanner.nextLine();
-                    }
 
-                    playedSuccessfully = gameController.playCard(cardIndex);
 
-                    if (!playedSuccessfully) {
-                        System.out.println("No puedes jugar esa carta, elige otra (1) o roba una del mazo (2).");
-                    } else {
-                        gameController.nextTurn();
-                    }
 
-                    if (gameController.isGameOver()) {
-                        System.out.println("El juego ha terminado. ¡Felicidades " + gameController.currentPlayer() + ", has ganado!");
-                        break;
-                    }
-
-                } else {
-                    gameController.drawCard(1);
-                    playedSuccessfully = true;
-                    gameController.nextTurn();
-                }
-            } while (!playedSuccessfully);
-
+        } else {
+            gameController.drawCard(1);
+            gameController.nextTurn();
         }
     }
 }
