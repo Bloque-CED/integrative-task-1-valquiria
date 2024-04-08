@@ -76,15 +76,11 @@ public class PriorityQueue<T> {
             return;
         }
 
-        // Incrementar la prioridad del nodo con la menor prioridad para hacerla la más alta.
-        int highestPriority = (front.priority > lowest.priority) ? front.priority + 1 : lowest.priority + 1;
-        lowest.priority = highestPriority;
+        // Incrementar la prioridad del nodo con la menor prioridad para hacerla la más alta. ( int highestPriority)
+        lowest.priority  = (front.priority > lowest.priority) ? front.priority + 1 : lowest.priority + 1;
 
-        // Reinsertar el nodo con la nueva prioridad.
-        if (previousLowest != null) {
-            previousLowest.next = lowest.next; // Remover el nodo más bajo de su posición actual.
-        }
-
+        // Reinsertar el nodo con la nueva prioridad. (se omitio un if != null)
+        previousLowest.next = lowest.next;// Remover el nodo más bajo de su posición actual.
         // Poner el nodo más bajo (ahora con la mayor prioridad) al frente.
         lowest.next = front;
         front = lowest;

@@ -45,16 +45,20 @@ public class GameController {
         Queue<String> cardsToDeal = new Queue<>();
         int totalCardsToDeal = players.size() * 7;
         for (int i = 0; i < totalCardsToDeal; i++) {
-            String cardId = deck.getDiscardDeck().pop();
-            cardsToDeal.enqueue(cardId);
+            //String cardId = deck.getDiscardDeck().pop();
+            //cardsToDeal.enqueue(cardId);
+            //Puede resumirse codigo
+            cardsToDeal.enqueue(deck.getDiscardDeck().pop());
         }
 
         // Repartir las cartas a los jugadores
         while (!cardsToDeal.isEmpty()) {
             for (Player player : players) {
                 if (!cardsToDeal.isEmpty()) {
-                    String cardId = cardsToDeal.dequeue();
-                    player.addCardToHand(cardId);
+                    //String cardId = cardsToDeal.dequeue();
+                    //player.addCardToHand(cardId);
+                    //Resumir codigo
+                    player.addCardToHand(cardsToDeal.dequeue());
                 }
             }
         }
@@ -91,8 +95,10 @@ public class GameController {
     }
 
     public String currentCard() {
-        String x = deck.getPlayDeck().peek();
-        return deck.cardForId(x);
+        //Resumir codigo
+        return deck.cardForId(deck.getPlayDeck().peek());
+        //String x = deck.getPlayDeck().peek();
+        //return deck.cardForId(x);
     }
 
     public boolean isChanged() {
@@ -101,20 +107,17 @@ public class GameController {
 
     public String currentPlayerCardList() {
         List<String> list = playerQueue.peek().getHand();
-
         String result = "";
 
         for (int i = 0; i < list.size(); i++) {
             result +=  i+1 + ".  " + deck.cardForId(list.get(i)) + "\n";
         }
-
         return result;
     }
 
     public boolean isActiveSpecialcard() {
         String topCardId = deck.getPlayDeck().peek();
         Card topCard = deck.getCardTable().get(topCardId);
-
         boolean flag = false;
 
         if (topCard.getSpecialType() != Card.SpecialType.NONE) {
@@ -144,7 +147,6 @@ public class GameController {
         }
         changeColor = false;
         changeColorController = true;
-
     }
 
     //---------------------------------------------------------------------------------------
@@ -219,20 +221,20 @@ public class GameController {
             case DRAW_TWO:
                 drawCard(2);
                 nextTurn();
-                message = "Se activó una carta de +2 en ti. Se te agregaron 2 cartas y perdiste tu turno.";
+                message = "A card with a +2 effect was used against you. You received 2 cards and lost your turn.";
                 break;
             case SKIP:
                 nextTurn();
-                message = "Se activó una carta de salto en ti. Perdiste tu turno.";
+                message = "A card with skip effect was used against you. You lost your turn.";
                 break;
             case REVERSE:
                 invert = !invert;
                 nextTurn();
                 nextTurn();
-                message = "Se activó una carta de reversa antes de ti. El orden de juego ha sido invertido. Espera tu nuevo turno";
+                message = "A card with reverse effect was used against you. The order of gameplay has been inverted. Wait for your new turn.";
                 break;
             case CHANGE:
-                message = "Se activó una carta de cambio de color. El color de la carta de cambio es: " + auxiliaryCard + ".";
+                message = "A color change card was activated. The color of the change card is: " + auxiliaryCard + ".";
                 break;
         }
         activeSpecialcard = false;
@@ -243,7 +245,8 @@ public class GameController {
     // Método para pasar al siguiente turno
     public void nextTurn() {
 
-        int i = playerQueue.size();
+        //No se esta usando esto
+        //int i = playerQueue.size();
 
         if (!invert) {
             playerQueue.increasePriority();
@@ -253,7 +256,6 @@ public class GameController {
 
             // Vuelve a encolar al jugador actual con prioridad 1, colocándolo al final de la cola.
             playerQueue.enqueue(currentPlayer, 1);
-
         } else {
             playerQueue.prioritizeLowest();
         }
@@ -265,8 +267,10 @@ public class GameController {
         Player currentPlayer = playerQueue.peek();
         for (int i = 0; i < numberCards; i++) {
             // Extraer una carta del mazo y añadirla a la mano del jugador actual
-            String drawnCardId = deck.getDiscardDeck().pop();
-            currentPlayer.addCardToHand(drawnCardId);
+            //String drawnCardId = deck.getDiscardDeck().pop();
+            //currentPlayer.addCardToHand(drawnCardId);
+            //Resumir codigo
+            currentPlayer.addCardToHand(deck.getDiscardDeck().pop());
         }
     }
 
@@ -280,10 +284,8 @@ public class GameController {
             // Si la mano del jugador está vacía, el jugador ha ganado
             gameOver = true;
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
-
 }
 

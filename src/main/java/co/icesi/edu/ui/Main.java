@@ -10,6 +10,7 @@ public class Main {
     public GameController gameController;
     public Scanner scanner;
 
+    //No puede existir throws en el main porque no hay nadie más que se encargue de manejarlo
     public Main() throws Exception {
         scanner = new Scanner(System.in);
         gameController = new GameController();
@@ -17,18 +18,18 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         Main main = new Main();
-        main.wellcome();
+        main.menuWelcome();
     }
 
 
-    public void wellcome() {
-        System.out.println("Bienvenido al juego UNO!");
-        System.out.println("Ingrese el número de jugadores (2-5): ");
+    public void menuWelcome() {
+        System.out.println("Welcome to UNO game!");
+        System.out.println("Enter number of players (2-5): ");
         System.out.print("   >");
         int numPlayers = scanner.nextInt();
         scanner.nextLine();
         while (numPlayers < 2 || numPlayers > 5) {
-            System.out.println("Número inválido de jugadores. Por favor, ingrese un número entre 2 y 5.");
+            System.out.println("Invalid number of players. Please enter a number between 2 and 5.");
             System.out.print("   >");
             numPlayers = scanner.nextInt();
             scanner.nextLine();
@@ -36,13 +37,12 @@ public class Main {
 
         List<String> playerNames = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++) {
-            System.out.println("Ingrese el nombre del jugador " + (i + 1) + ": ");
+            System.out.println("Enter the name of player " + (i + 1) + ": ");
             System.out.print("   >");
             String name = scanner.nextLine();
             playerNames.add(name);
         }
         gameController.startGame(playerNames);
-
         gameTurn();
     }
 
@@ -51,87 +51,79 @@ public class Main {
 
         //VALIDAR SI ALGUIEN GANO
         if (gameController.isGameOver()) {
-            System.out.println("\n--------------------------------------------------");
-            System.out.println("HAS GANADO: " + actualPLayer + "!");
-            System.out.println("--------------------------------------------------");
+            System.out.println("\n---------------------------------------------------------");
+            System.out.println(actualPLayer + " YOU ARE THE WINNER OF THE GAME, WELL DONE!!");
+            System.out.println("---------------------------------------------------------");
             return;
         }
         actualPLayer = gameController.currentPlayer();
         actualPLayer = actualPLayer.toUpperCase();
 
-        System.out.println("\n--------------------------------------------------");
-        System.out.println("ES EL TURNO DE: " +  actualPLayer );
+        System.out.println("\n---------------------------------------------------------");
+        System.out.println("IT'S THE TURN OF: " +  actualPLayer );
 
         if (gameController.isActiveSpecialcard()) {
-            String message = gameController.handleSpecialCardEffect();
-            System.out.println(message);
+            //String message = gameController.handleSpecialCardEffect();
+            System.out.println(gameController.handleSpecialCardEffect());
         }else {
             toPlay();
         }
-
         gameTurn();
     }
 
     public void toPlay() {
-        int action = -1;
+        //int action = -1;
 
-        System.out.println("La carta en la cima del montón de descarte es: " + gameController.currentCard());
-        System.out.println("Tus cartas son: \n");
+        System.out.println("The card on top of the discard stack is: " + gameController.currentCard());
+        System.out.println("These are your cards: \n");
         System.out.println(gameController.currentPlayerCardList());
 
-        System.out.println("¿Qué acción te gustaría realizar?");
-        System.out.println("1. Jugar una carta");
-        System.out.println("2. Robar del mazo");
+        System.out.println("What do you want to do?");
+        System.out.println("1. Play a card.");
+        //No estoy segura de que esto sea así, el punto 2 la traduccion
+        System.out.println("2. Take a card from the deck.");
         System.out.print("   >");
-        action = scanner.nextInt();
+        int action = scanner.nextInt();
         scanner.nextLine();
         while (action < 1 || action > 2) {
-            System.out.println("Número inválido. Por favor, ingrese un número entre 1 y 2.");
+            System.out.println("Invalid number. Please enter a number between 1 and 2.");
             System.out.print("   >");
             action = scanner.nextInt();
             scanner.nextLine();
         }
 
         if (action == 1) {
-            System.out.print("Elige la carta que quieres jugar");
+            System.out.print("Select the card you want to play\n");
             System.out.print("   >");
             int cardIndex = scanner.nextInt() - 1;
             scanner.nextLine();
 
             while (cardIndex < 0 || cardIndex >= gameController.handSizePlayer()) {
-                System.out.println("Índice de carta inválido. Intentalo de nuevo");
+                System.out.println("The card index is invalid. Try again.");
                 System.out.print("   >");
                 cardIndex = scanner.nextInt() - 1;
                 scanner.nextLine();
             }
 
             if (!gameController.playCard(cardIndex)) {
-                System.out.println("No puedes jugar esa carta, elige otra (1) o roba una del mazo (2).");
+                System.out.println("\nYou can't play this card, select another card (1) or take a card from the deck (2).");
             }
 
 
-
-
-
             if (gameController.isChanged()) {
-                System.out.println("A que color deseas cambiar la carta de Cambio de color?");
-                System.out.println("1. Azul,  2. Verde,  3. Rojo,  4. Amarillo");
+                System.out.println("To use the color change card, which color do you want to continue playing with?");
+                System.out.println("1. BLUE,  2. GREEN,  3. RED,  4. YELLOW");
                 System.out.print("   >");
                 int color = scanner.nextInt();
                 scanner.nextLine();
                 while (color < 1 || color > 4) {
-                    System.out.println("Número inválido. Por favor, ingrese un número entre 1 y 4.");
+                    System.out.println("Invalid number. Please enter a number between 1 and 4.");
                     System.out.print("   >");
                     color = scanner.nextInt();
                     scanner.nextLine();
                 }
                 gameController.changedColor(color);
             }
-
-
-
-
-
         } else {
             gameController.drawCard(1);
             gameController.nextTurn();

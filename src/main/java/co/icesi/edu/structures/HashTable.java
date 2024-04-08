@@ -13,7 +13,6 @@ public class HashTable<K, V> {
     }
 
     private int hash(K key) {
-
         return Math.abs(key.hashCode()) % capacity;
     }
 

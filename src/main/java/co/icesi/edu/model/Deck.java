@@ -49,30 +49,20 @@ public class Deck {
                     Card drawTwoCard = new Card(color, -1, Card.SpecialType.DRAW_TWO);
 
                     String drawTwoCardId = drawTwoCard.getId();
-
                     cardTable.put(drawTwoCardId, drawTwoCard);
-
                     listCards.add(drawTwoCardId);
 
 
                     Card reverseCard = new Card(color, -1, Card.SpecialType.REVERSE);
-
                     String reverseCardId = reverseCard.getId();
-
                     cardTable.put(reverseCardId, reverseCard);
-
                     listCards.add(reverseCardId);
 
 
                     Card skipCard = new Card(color, -1, Card.SpecialType.SKIP);
-
                     String skipCardId = skipCard.getId();
-
                     cardTable.put(skipCardId, skipCard);
-
-
                     listCards.add(skipCardId);
-
                 }
             }
         }
@@ -81,13 +71,12 @@ public class Deck {
             Card wildCard = new Card(Card.Color.NONE, -1, Card.SpecialType.CHANGE);
 
             String wildCardId = wildCard.getId();
-
             cardTable.put(wildCardId, wildCard);
-
             listCards.add(wildCardId);
         }
 
-        shuffleStack(listCards); // se revuelven todas las cartas que se crearon en orden
+        //shuffleStack(listCards); // se revuelven todas las cartas que se crearon en orden
+        Collections.shuffle(listCards);
 
         for (String cardId : listCards) {   // Se agregan las cartas revueltas a las pila
             discardDeck.push(cardId);
@@ -95,9 +84,10 @@ public class Deck {
 
     }
 
-    public void shuffleStack(List<String> listCards) {
+    //Puede omitirse este metodo
+    /*public void shuffleStack(List<String> listCards) {
         Collections.shuffle(listCards);
-    }
+    }*/
 
     public Stack<String> getDiscardDeck() {
         return discardDeck;
