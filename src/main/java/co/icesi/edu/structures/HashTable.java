@@ -7,7 +7,7 @@ public class HashTable<K, V> {
     private int capacity;
 
     public HashTable() {
-        this.capacity = 20;
+        this.capacity = 5;
         table = new HashNode[capacity];
         this.size = 0;
     }

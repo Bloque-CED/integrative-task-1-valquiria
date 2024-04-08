@@ -2,21 +2,21 @@ package co.icesi.edu.structures;
 
 public class Queue<T> {
     private Node<T> front;
-    private Node<T> rear;
+    private Node<T> back;
 
     public Queue() {
         this.front = null;
-        this.rear = null;
+        this.back = null;
     }
 
     public void enqueue(T item) { //agregar
         Node<T> newNode = new Node<>(item);
         if (isEmpty()) {
             front = newNode;
-            rear = newNode;
+            back = newNode;
         } else {
-            rear.next = newNode;
-            rear = newNode;
+            back.next = newNode;
+            back = newNode;
         }
     }
 
@@ -27,7 +27,7 @@ public class Queue<T> {
         T item = front.item;
         front = front.next;
         if (front == null) {
-            rear = null;
+            back = null;
         }
         return item;
     }

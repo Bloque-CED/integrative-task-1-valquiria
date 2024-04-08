@@ -126,7 +126,7 @@ public class Main {
             }
         } else {
             gameController.drawCard(1);
-            gameController.nextTurn();
+            //gameController.nextTurn();
         }
     }
 }

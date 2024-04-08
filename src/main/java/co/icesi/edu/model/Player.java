@@ -18,7 +18,7 @@ public class Player {
 
     // Añade el ID de una carta a la mano del jugador
     public void addCardToHand(String cardId) {
-        if (cardId == null || cardId.trim().isEmpty()) {
+        if (cardId == null || cardId.isEmpty()) {
             throw new IllegalArgumentException("El ID de la carta no puede ser null o vacío");
         }
         hand.add(cardId);
