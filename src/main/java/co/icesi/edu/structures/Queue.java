@@ -1,6 +1,8 @@
 package co.icesi.edu.structures;
 
-public class Queue<T> {
+import co.icesi.edu.interfaces.IQueue;
+
+public class Queue<T> implements IQueue<T> {
     private Node<T> front;
     private Node<T> back;
 
@@ -30,13 +32,6 @@ public class Queue<T> {
             back = null;
         }
         return item;
-    }
-
-    public T peek() { //ver
-        if (isEmpty()) {
-            throw new IllegalStateException("Queue is empty");
-        }
-        return front.item;
     }
 
     public boolean isEmpty() {

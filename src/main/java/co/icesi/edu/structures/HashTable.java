@@ -1,7 +1,9 @@
 package co.icesi.edu.structures;
 
+import co.icesi.edu.interfaces.IHashTable;
 
-public class HashTable<K, V> {
+
+public class HashTable<K, V> implements IHashTable<K, V>{
 
     private HashNode<K, V>[] table;
     private int size;
@@ -13,7 +15,7 @@ public class HashTable<K, V> {
         this.size = 0;
     }
 
-    private int hash(K key) {
+    public int hash(K key) {
         return Math.abs(key.hashCode()) % capacity;
     }
 

@@ -1,6 +1,8 @@
 package co.icesi.edu.structures;
 
-public class Stack<T> {
+import co.icesi.edu.interfaces.IStack;
+
+public class Stack<T> implements IStack<T> {
     private Node<T> top;
 
     public Stack() {

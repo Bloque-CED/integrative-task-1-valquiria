@@ -83,7 +83,6 @@ public class Main {
         System.out.println("IT'S THE TURN OF: " +  actualPLayer );
 
         if (gameController.isActiveSpecialcard()) {
-            //String message = gameController.handleSpecialCardEffect();
             System.out.println(gameController.handleSpecialCardEffect());
         }else {
             toPlay();

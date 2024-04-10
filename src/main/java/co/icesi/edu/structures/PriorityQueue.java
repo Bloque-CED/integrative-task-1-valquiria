@@ -1,6 +1,8 @@
 package co.icesi.edu.structures;
 
-public class PriorityQueue<T> {
+import co.icesi.edu.interfaces.IPriorityQueue;
+
+public class PriorityQueue<T> implements IPriorityQueue<T>{
     private Node<T> front;
     private int count; // Contador para el tamaño de la cola
 
