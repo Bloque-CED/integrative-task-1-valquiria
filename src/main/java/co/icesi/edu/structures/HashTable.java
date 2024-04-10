@@ -2,12 +2,13 @@ package co.icesi.edu.structures;
 
 
 public class HashTable<K, V> {
+
     private HashNode<K, V>[] table;
     private int size;
     private int capacity;
 
     public HashTable() {
-        this.capacity = 5;
+        this.capacity = 37;
         table = new HashNode[capacity];
         this.size = 0;
     }

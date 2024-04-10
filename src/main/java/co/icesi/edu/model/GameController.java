@@ -15,6 +15,7 @@ public class GameController {
     private boolean activeSpecialcard;
     private boolean changeColor;
     private boolean changeColorController;
+    private boolean takeCard;
 
     public GameController() throws Exception {
         deck = new Deck();
@@ -25,6 +26,7 @@ public class GameController {
         auxiliaryCard = null;
         changeColor = false;
         changeColorController = false;
+        takeCard = true;
     }
 
     public void startGame(List<String> playerNames) {
@@ -149,6 +151,14 @@ public class GameController {
         changeColorController = true;
     }
 
+    public boolean isTakeCard() {
+        return takeCard;
+    }
+
+    public void setTakeCard(boolean takeCard) {
+        this.takeCard = takeCard;
+    }
+
     //---------------------------------------------------------------------------------------
 
     // Método para que un jugador juegue una carta
@@ -245,6 +255,8 @@ public class GameController {
     // Método para pasar al siguiente turno
     public void nextTurn() {
 
+        takeCard = true;
+
         //No se esta usando esto
         //int i = playerQueue.size();
 
@@ -262,17 +274,18 @@ public class GameController {
     }
 
 
-    // Método para robar una carta del mazo
+    // Método para robar una carta del mazo CON COLITA
     public void drawCard(int numberCards) {
         Player currentPlayer = playerQueue.peek();
+        Queue<String> drawQueue = new Queue<>(); // cola temporal para las cartas a robar
         for (int i = 0; i < numberCards; i++) {
-            // Extraer una carta del mazo y añadirla a la mano del jugador actual
-            //String drawnCardId = deck.getDiscardDeck().pop();
-            //currentPlayer.addCardToHand(drawnCardId);
-            //Resumir codigo
-            currentPlayer.addCardToHand(deck.getDiscardDeck().pop());
+            drawQueue.enqueue(deck.getDiscardDeck().pop()); // Encolar la carta extraída del mazo de descarte
+        }
+        while (!drawQueue.isEmpty()) {
+            currentPlayer.addCardToHand(drawQueue.dequeue()); // Añadir cartas a la mano del jugador desde la cola
         }
     }
+
 
     // Método para verificar el fin del juego
     private boolean checkGameOver() {

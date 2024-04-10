@@ -23,7 +23,9 @@ public class Main {
 
 
     public void menuWelcome() {
+        System.out.println("\n---------------------------------------------------------");
         System.out.println("Welcome to UNO game!");
+        System.out.println("---------------------------------------------------------");
         System.out.println("Enter number of players (2-5): ");
         System.out.print("   >");
         int numPlayers = scanner.nextInt();
@@ -47,6 +49,7 @@ public class Main {
     }
 
     public void gameTurn() {
+
         String actualPLayer = "";
 
         //VALIDAR SI ALGUIEN GANO
@@ -56,8 +59,7 @@ public class Main {
             System.out.println("---------------------------------------------------------");
             return;
         }
-        actualPLayer = gameController.currentPlayer();
-        actualPLayer = actualPLayer.toUpperCase();
+        actualPLayer = gameController.currentPlayer().toUpperCase();
 
         System.out.println("\n---------------------------------------------------------");
         System.out.println("IT'S THE TURN OF: " +  actualPLayer );
@@ -72,30 +74,42 @@ public class Main {
     }
 
     public void toPlay() {
-        //int action = -1;
+
+        boolean takeCard = gameController.isTakeCard();
 
         System.out.println("The card on top of the discard stack is: " + gameController.currentCard());
         System.out.println("These are your cards: \n");
+
+        if (takeCard) {
+            System.out.println("0.  Take a card from the deck");
+        } else {
+            System.out.println("0.  Skip");
+        }
+
+        System.out.println("------------------------------");
         System.out.println(gameController.currentPlayerCardList());
 
-        System.out.println("What do you want to do?");
-        System.out.println("1. Play a card.");
-        //No estoy segura de que esto sea así, el punto 2 la traduccion
-        System.out.println("2. Take a card from the deck.");
+        System.out.print("Select the card/option you want to play\n");
         System.out.print("   >");
         int action = scanner.nextInt();
-        scanner.nextLine();
-        while (action < 1 || action > 2) {
-            System.out.println("Invalid number. Please enter a number between 1 and 2.");
+
+        while (action < 0 || action > gameController.handSizePlayer()) {
+            System.out.println("Invalid number. Please enter a number between 0 and " + gameController.handSizePlayer() + ".");
             System.out.print("   >");
             action = scanner.nextInt();
             scanner.nextLine();
         }
 
-        if (action == 1) {
-            System.out.print("Select the card you want to play\n");
-            System.out.print("   >");
-            int cardIndex = scanner.nextInt() - 1;
+        if (action == 0) {
+            if (takeCard){
+                gameController.drawCard(1);
+                gameController.setTakeCard(false);
+            } else {
+                gameController.nextTurn();
+            }
+        } else {
+
+            int cardIndex = action - 1;
             scanner.nextLine();
 
             while (cardIndex < 0 || cardIndex >= gameController.handSizePlayer()) {
@@ -124,9 +138,6 @@ public class Main {
                 }
                 gameController.changedColor(color);
             }
-        } else {
-            gameController.drawCard(1);
-            //gameController.nextTurn();
         }
     }
 }
