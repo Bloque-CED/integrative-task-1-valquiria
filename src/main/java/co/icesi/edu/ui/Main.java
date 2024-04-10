@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
+    //--------------------------------------------------------------------------------------------//
+
     public GameController gameController;
     public Scanner scanner;
 
@@ -21,7 +24,14 @@ public class Main {
         main.menuWelcome();
     }
 
+    //--------------------------------------------------------------------------------------------//
 
+    /**
+     * <b>menuWelcome</b>
+     * Displays the welcome menu, prompts the user to enter the number of players and their names, and starts the game.
+     * <b>pre:</b> None.
+     * <b>post:</b> The game has been started with the specified number of players and their names.
+     */
     public void menuWelcome() {
         System.out.println("\n---------------------------------------------------------");
         System.out.println("Welcome to UNO game!");
@@ -48,6 +58,14 @@ public class Main {
         gameTurn();
     }
 
+    //--------------------------------------------------------------------------------------------//
+
+    /**
+     * <b>gameTurn</b>
+     * Executes a turn in the game, including checking for a winner, displaying the current player's turn, and handling special card effects.
+     * <b>pre:</b> None.
+     * <b>post:</b> The game has advanced to the next turn and any special card effects have been applied.
+     */
     public void gameTurn() {
 
         String actualPLayer = "";
@@ -73,6 +91,14 @@ public class Main {
         gameTurn();
     }
 
+    //--------------------------------------------------------------------------------------------//
+
+    /**
+     * <b>toPlay</b>
+     * Manages the player's options during their turn, including playing a card, drawing a card, or skipping their turn.
+     * <b>pre:</b> None.
+     * <b>post:</b> The player has performed a valid action during their turn.
+     */
     public void toPlay() {
 
         boolean takeCard = gameController.isTakeCard();
