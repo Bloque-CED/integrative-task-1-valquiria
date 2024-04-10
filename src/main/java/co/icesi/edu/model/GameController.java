@@ -17,6 +17,13 @@ public class GameController {
     private boolean changeColorController;
     private boolean takeCard;
 
+    /**
+     * <b>GameController Constructor</b>
+     * Initializes the game controller, including the deck, player queue, and game state.
+     * <b>pre:</b> None.
+     * <b>post:</b> The game controller has been initialized.
+     * @throws Exception if an error occurs during initialization
+     */
     public GameController() throws Exception {
         deck = new Deck();
         playerQueue = new PriorityQueue<>();
@@ -29,6 +36,31 @@ public class GameController {
         takeCard = true;
     }
 
+
+    //--------------------------------------------------------------------------------------------//
+    //Getters and setters
+    public boolean isGameOver() {
+        return gameOver;
+    }
+    public boolean isChanged() {
+        return changeColor;
+    }
+    public boolean isTakeCard() {
+        return takeCard;
+    }
+    public void setTakeCard(boolean takeCard) {
+        this.takeCard = takeCard;
+    }
+
+    //--------------------------------------------------------------------------------------------//
+
+    /**
+     * <b>startGame</b>
+     * Starts the game by creating players, distributing cards, and preparing the play deck.
+     * <b>pre:</b> A list of player names is provided.
+     * <b>post:</b> The game is started with the specified players and initial game state.
+     * @param playerNames a list of player names
+     */
     public void startGame(List<String> playerNames) {
         // Lista para mantener a los jugadores después de crearlos
         List<Player> players = new ArrayList<>();
@@ -84,29 +116,46 @@ public class GameController {
 
     //---------------------------------------------------------------------------------------
 
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
+    /**
+     * <b>currentPlayer</b>
+     * Retrieves the name of the current player.
+     * <b>pre:</b> None.
+     * <b>post:</b> The name of the current player has been retrieved.
+     * @return the name of the current player
+     */
     public String currentPlayer(){
         return playerQueue.peek().getName();
     }
 
+    /**
+     * <b>handSizePlayer</b>
+     * Retrieves the hand size of the current player.
+     * <b>pre:</b> None.
+     * <b>post:</b> The hand size of the current player has been retrieved.
+     * @return the hand size of the current player
+     */
     public int handSizePlayer(){
         return playerQueue.peek().getHand().size();
     }
 
+    /**
+     * <b>currentCard</b>
+     * Retrieves the string representation of the current card on top of the play deck.
+     * <b>pre:</b> None.
+     * <b>post:</b> The string representation of the current card has been retrieved.
+     * @return the string representation of the current card
+     */
     public String currentCard() {
-        //Resumir codigo
         return deck.cardForId(deck.getPlayDeck().peek());
-        //String x = deck.getPlayDeck().peek();
-        //return deck.cardForId(x);
     }
 
-    public boolean isChanged() {
-        return changeColor;
-    }
-
+    /**
+     * <b>currentPlayerCardList</b>
+     * Retrieves the string representation of the current player's hand.
+     * <b>pre:</b> None.
+     * <b>post:</b> The string representation of the current player's hand has been retrieved.
+     * @return the string representation of the current player's hand
+     */
     public String currentPlayerCardList() {
         List<String> list = playerQueue.peek().getHand();
         String result = "";
@@ -117,6 +166,13 @@ public class GameController {
         return result;
     }
 
+    /**
+     * <b>isActiveSpecialcard</b>
+     * Checks if there is an active special card on top of the play deck.
+     * <b>pre:</b> None.
+     * <b>post:</b> True if there is an active special card, false otherwise.
+     * @return true if there is an active special card, false otherwise
+     */
     public boolean isActiveSpecialcard() {
         String topCardId = deck.getPlayDeck().peek();
         Card topCard = deck.getCardTable().get(topCardId);
@@ -130,7 +186,15 @@ public class GameController {
         return flag;
     }
 
+    //--------------------------------------------------------------------------------------------//
 
+    /**
+     * <b>changedColor</b>
+     * Sets the auxiliary color for the change color effect.
+     * <b>pre:</b> None.
+     * <b>post:</b> The auxiliary color has been set for the change color effect.
+     * @param i the index representing the color to set
+     */
     public void changedColor(int i) {
         switch (i) {
             case 1:
@@ -151,17 +215,16 @@ public class GameController {
         changeColorController = true;
     }
 
-    public boolean isTakeCard() {
-        return takeCard;
-    }
-
-    public void setTakeCard(boolean takeCard) {
-        this.takeCard = takeCard;
-    }
-
     //---------------------------------------------------------------------------------------
 
-    // Método para que un jugador juegue una carta
+    /**
+     * <b>playCard</b>
+     * Allows a player to play a card from their hand.
+     * <b>pre:</b> The specified card index is valid and playable.
+     * <b>post:</b> The specified card has been played, and its effects have been applied.
+     * @param cardIndex the index of the card to play
+     * @return true if the card was successfully played, false otherwise
+     */
     public boolean playCard(int cardIndex) {
         boolean flag = false;
 
@@ -213,12 +276,15 @@ public class GameController {
         return flag;
     }
 
+    //--------------------------------------------------------------------------------------------//
 
-
-
-
-
-    // Método para manejar el efecto de las cartas especiales
+    /**
+     * <b>handleSpecialCardEffect</b>
+     * Handles the effects of the special card on top of the play deck.
+     * <b>pre:</b> There is a special card on top of the play deck.
+     * <b>post:</b> The effects of the special card have been applied, and a message describing the effect has been returned.
+     * @return a message describing the effect of the special card
+     */
     public String handleSpecialCardEffect() {
         // Obtiene la carta en la cima de la pila de juego para comparar
         String topCardId = deck.getPlayDeck().peek();
@@ -251,15 +317,16 @@ public class GameController {
         return message;
     }
 
+    //--------------------------------------------------------------------------------------------//
 
-    // Método para pasar al siguiente turno
+    /**
+     * <b>nextTurn</b>
+     * Advances the game to the next turn, updating the player queue and game state.
+     * <b>pre:</b> None.
+     * <b>post:</b> The game has advanced to the next turn, and the player queue and game state have been updated accordingly.
+     */
     public void nextTurn() {
-
         takeCard = true;
-
-        //No se esta usando esto
-        //int i = playerQueue.size();
-
         if (!invert) {
             playerQueue.increasePriority();
 
@@ -274,7 +341,13 @@ public class GameController {
     }
 
 
-    // Método para robar una carta del mazo CON COLITA
+    /**
+     * <b>drawCard</b>
+     * Draws a specified number of cards from the discard deck and adds them to the current player's hand.
+     * <b>pre:</b> The specified number of cards is valid and drawable.
+     * <b>post:</b> The specified number of cards has been drawn from the discard deck and added to the current player's hand.
+     * @param numberCards the number of cards to draw
+     */
     public void drawCard(int numberCards) {
         Player currentPlayer = playerQueue.peek();
         Queue<String> drawQueue = new Queue<>(); // cola temporal para las cartas a robar
@@ -286,8 +359,13 @@ public class GameController {
         }
     }
 
-
-    // Método para verificar el fin del juego
+    /**
+     * <b>checkGameOver</b>
+     * Checks if the game is over by determining if the current player has an empty hand.
+     * <b>pre:</b> None.
+     * <b>post:</b> True if the game is over, false otherwise.
+     * @return true if the game is over, false otherwise
+     */
     private boolean checkGameOver() {
         // Obtener al jugador actual de la cola de prioridad
         Player currentPlayer = playerQueue.peek();

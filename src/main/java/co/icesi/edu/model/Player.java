@@ -7,16 +7,38 @@ public class Player {
     private String name;
     private List<String> hand;
 
+    /**
+     * <b>Constructor of the Player class</b>
+     * Creates a new player with the specified name and an empty hand.
+     * <b>pre:</b> The player's name must not be null.
+     * <b>post:</b> A new player with the specified name and an empty hand has been created.
+     * @param name the name of the player
+     */
+
     public Player(String name) {
         this.name = name;
         this.hand = new ArrayList<>();
     }
 
+    //--------------------------------------------------------------------------------------------//
+
+    //Getters and setters
     public String getName() {
         return name;
     }
+    public List<String> getHand() {
+        return new ArrayList<>(hand);
+    }
 
-    // Añade el ID de una carta a la mano del jugador
+    //--------------------------------------------------------------------------------------------//
+
+    /**
+     * <b>addCardToHand</b>
+     * Adds a card ID to the player's hand.
+     * <b>pre:</b> The card ID cannot be null or empty.
+     * <b>post:</b> The card ID has been added to the player's hand.
+     * @param cardId the ID of the card to add to the hand
+     */
     public void addCardToHand(String cardId) {
         if (cardId == null || cardId.isEmpty()) {
             throw new IllegalArgumentException("El ID de la carta no puede ser null o vacío");
@@ -24,21 +46,19 @@ public class Player {
         hand.add(cardId);
     }
 
-    // Elimina el ID de una carta de la mano del jugador, basándose en la igualdad del ID
+    /**
+     * <b>removeCardFromHand</b>
+     * Removes a card ID from the player's hand, based on ID equality.
+     * <b>pre:</b> None.
+     * <b>post:</b> The card ID has been removed from the player's hand if it was present.
+     * @param cardId the ID of the card to remove from the hand
+     * @return true if the card ID has been removed, false if it was not present
+     */
     public boolean removeCardFromHand(String cardId) {
         return hand.remove(cardId);
     }
 
-    // Devuelve el tamaño de la mano del jugador
-    public int getHandSize() {
-        return hand.size();
-    }
 
-
-    // Devuelve la mano del jugador como una lista de IDs de cartas
-    public List<String> getHand() {
-        return new ArrayList<>(hand); // Devuelve una copia de la mano para evitar modificaciones externas
-    }
 
 
 }

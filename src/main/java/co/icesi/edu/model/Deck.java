@@ -12,6 +12,13 @@ public class Deck {
     private Stack<String> discardDeck; //pilaDeDescarte
     private HashTable<String, Card> cardTable; //tablaDeCartas
 
+    /**
+     * <b>Deck Constructor</b>
+     * Initializes the play deck, discard deck, and card table, and initializes the draw pile.
+     * <b>pre:</b> None.
+     * <b>post:</b> The play deck, discard deck, and card table are initialized, and the draw pile is set up.
+     * @throws Exception if an error occurs during initialization
+     */
     public Deck() throws Exception {
         this.playDeck = new Stack<>();
         this.discardDeck = new Stack<>();
@@ -19,6 +26,27 @@ public class Deck {
         initializeDrawPile();
     }
 
+    //--------------------------------------------------------------------------------------------//
+    //Getters and setters
+    public Stack<String> getDiscardDeck() {
+        return discardDeck;
+    }
+    public Stack<String> getPlayDeck() {
+        return playDeck;
+    }
+    public HashTable<String, Card> getCardTable() {
+        return cardTable;
+    }
+
+    //--------------------------------------------------------------------------------------------//
+
+    /**
+     * <b>initializeDrawPile</b>
+     * Initializes the draw pile with standard cards and special cards, shuffles them, and adds them to the discard deck.
+     * <b>pre:</b> None.
+     * <b>post:</b> The draw pile is initialized with standard and special cards, shuffled, and added to the discard deck.
+     * @throws Exception if an error occurs during initialization
+     */
     private void initializeDrawPile() throws Exception {
 
         List<String> listCards = new ArrayList<>();
@@ -84,24 +112,15 @@ public class Deck {
 
     }
 
-    //Puede omitirse este metodo
-    /*public void shuffleStack(List<String> listCards) {
-        Collections.shuffle(listCards);
-    }*/
-
-    public Stack<String> getDiscardDeck() {
-        return discardDeck;
-    }
-
-    public Stack<String> getPlayDeck() {
-        return playDeck;
-    }
-
+    /**
+     * <b>cardForId</b>
+     * Retrieves the card with the specified ID and returns its string representation.
+     * <b>pre:</b> The card ID exists in the card table.
+     * <b>post:</b> The card with the specified ID has been retrieved, and its string representation has been returned.
+     * @param idCard the ID of the card to retrieve
+     * @return the string representation of the card
+     */
     public String cardForId(String idCard) {
         return cardTable.get(idCard).toString();
-    }
-
-    public HashTable<String, Card> getCardTable() {
-        return cardTable;
     }
 }
