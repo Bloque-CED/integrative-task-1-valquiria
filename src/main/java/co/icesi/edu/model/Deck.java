@@ -103,7 +103,6 @@ public class Deck {
             listCards.add(wildCardId);
         }
 
-        //shuffleStack(listCards); // se revuelven todas las cartas que se crearon en orden
         Collections.shuffle(listCards);
 
         for (String cardId : listCards) {   // Se agregan las cartas revueltas a las pila

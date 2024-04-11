@@ -9,16 +9,38 @@ public class HashTable<K, V> implements IHashTable<K, V>{
     private int size;
     private int capacity;
 
+    /**
+     * <b>HashTable</b>
+     * Initializes a new hash table with a default capacity of 37.
+     * <b>pre:</b> None.
+     * <b>post:</b> A new hash table has been created with the default capacity and size set to 0.
+     */
     public HashTable() {
         this.capacity = 37;
         table = new HashNode[capacity];
         this.size = 0;
     }
 
+    /**
+     * <b>hash</b>
+     * Calculates the hash value for the specified key.
+     * <b>pre:</b> None.
+     * <b>post:</b> The hash value for the specified key has been calculated.
+     * @param key the key to calculate the hash value for
+     * @return the hash value for the specified key
+     */
     public int hash(K key) {
         return Math.abs(key.hashCode()) % capacity;
     }
 
+    /**
+     * <b>put</b>
+     * Inserts a key-value pair into the hash table.
+     * <b>pre:</b> The key and value are not null.
+     * <b>post:</b> The key-value pair has been inserted into the hash table.
+     * @param key the key to insert
+     * @param value the value to insert
+     */
     public void put(K key, V value) {
         int index = hash(key);
         HashNode<K, V> newNode = new HashNode<>(key, value);
@@ -43,6 +65,14 @@ public class HashTable<K, V> implements IHashTable<K, V>{
         }
     }
 
+    /**
+     * <b>get</b>
+     * Retrieves the value associated with the specified key from the hash table.
+     * <b>pre:</b> None.
+     * <b>post:</b> The value associated with the specified key has been retrieved from the hash table.
+     * @param key the key whose associated value is to be retrieved
+     * @return the value associated with the specified key, or null if the key is not found
+     */
     public V get(K key) {
         int index = hash(key);
         HashNode<K, V> current = table[index];
@@ -56,6 +86,13 @@ public class HashTable<K, V> implements IHashTable<K, V>{
         return null;
     }
 
+    /**
+     * <b>remove</b>
+     * Removes the key-value pair associated with the specified key from the hash table.
+     * <b>pre:</b> None.
+     * <b>post:</b> The key-value pair associated with the specified key has been removed from the hash table.
+     * @param key the key whose associated key-value pair is to be removed
+     */
     public void remove(K key) {
         int index = hash(key);
         HashNode<K, V> current = table[index];
@@ -76,10 +113,24 @@ public class HashTable<K, V> implements IHashTable<K, V>{
         }
     }
 
+    /**
+     * <b>isEmpty</b>
+     * Checks whether the hash table is empty.
+     * <b>pre:</b> None.
+     * <b>post:</b> None.
+     * @return true if the hash table is empty, false otherwise
+     */
     public boolean isEmpty() {
         return size == 0;
     }
 
+    /**
+     * <b>size</b>
+     * Returns the number of key-value pairs in the hash table.
+     * <b>pre:</b> None.
+     * <b>post:</b> None.
+     * @return the number of key-value pairs in the hash table
+     */
     public int size() {
         return size;
     }

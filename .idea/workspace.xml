@@ -4,17 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="28a8f8bd-a72f-4de6-a3fb-25e679f91928" name="Changes" comment="ui class contracts">
-      <change afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/interfaces/IHashTable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/interfaces/IPriorityQueue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/interfaces/IQueue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/interfaces/IStack.java" afterDir="false" />
+    <list default="true" id="28a8f8bd-a72f-4de6-a3fb-25e679f91928" name="Changes" comment="interface implementation and more">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/icesi/edu/model/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/model/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/icesi/edu/model/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/model/Deck.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/HashTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/HashTable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/PriorityQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/PriorityQueue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/Queue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/Queue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/Stack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/Stack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/icesi/edu/ui/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/ui/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,6 +121,8 @@
       <workItem from="1712699685870" duration="1471000" />
       <workItem from="1712745902297" duration="8736000" />
       <workItem from="1712771010180" duration="4795000" />
+      <workItem from="1712776226411" duration="2165000" />
+      <workItem from="1712779104351" duration="5609000" />
     </task>
     <task id="LOCAL-00001" summary="initial implementation of Deck and HashTable">
       <option name="closed" value="true" />
@@ -181,7 +180,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712768929099</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="interface implementation and more">
+      <option name="closed" value="true" />
+      <created>1712776474571</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1712776474571</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,6 +213,7 @@
     <MESSAGE value="mini change" />
     <MESSAGE value="model class contracts" />
     <MESSAGE value="ui class contracts" />
-    <option name="LAST_COMMIT_MESSAGE" value="ui class contracts" />
+    <MESSAGE value="interface implementation and more" />
+    <option name="LAST_COMMIT_MESSAGE" value="interface implementation and more" />
   </component>
 </project>

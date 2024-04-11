@@ -43,19 +43,15 @@ public class Card {
     public String getId() {
         return id;
     }
-
     public Color getColor() {
         return color;
     }
-
     public int getNumber() {
         return number;
     }
-
     public SpecialType getSpecialType() {
         return specialType;
     }
-
 
     //--------------------------------------------------------------------------------------------//
 
