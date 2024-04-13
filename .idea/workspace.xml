@@ -5,13 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="28a8f8bd-a72f-4de6-a3fb-25e679f91928" name="Changes" comment="interface implementation and more">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/icesi/edu/model/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/model/Card.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/icesi/edu/model/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/model/Deck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/HashTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/HashTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/PriorityQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/PriorityQueue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/Queue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/Queue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/Stack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/icesi/edu/structures/Stack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/co/icesi/edu/structures/null" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/co/icesi/edu/ui/null" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,8 +21,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -40,33 +40,124 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/renzi/Desktop/ArbolesBinarios/ArbolesBinarios&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "JUnit.HashTableTest.testGetBoundary.executor": "Run",
+    "JUnit.HashTableTest.testGetInteresting.executor": "Run",
+    "JUnit.HashTableTest.testGetStandard.executor": "Run",
+    "JUnit.HashTableTest.testIsEmptyBoundary.executor": "Run",
+    "JUnit.HashTableTest.testIsEmptyStandard.executor": "Run",
+    "JUnit.HashTableTest.testPutCollision.executor": "Run",
+    "JUnit.HashTableTest.testPutInteresting.executor": "Run",
+    "JUnit.HashTableTest.testPutStandard.executor": "Run",
+    "JUnit.HashTableTest.testRemoveBoundary.executor": "Run",
+    "JUnit.HashTableTest.testRemoveInteresting.executor": "Run",
+    "JUnit.HashTableTest.testRemoveStandard.executor": "Run",
+    "JUnit.HashTableTest.testSizeBoundary.executor": "Run",
+    "JUnit.HashTableTest.testSizeStandard.executor": "Run",
+    "JUnit.StackTest.testIsEmptyFalse.executor": "Run",
+    "JUnit.StackTest.testIsEmptyTrue.executor": "Run",
+    "JUnit.StackTest.testPeekEmptyStack.executor": "Run",
+    "JUnit.StackTest.testPeekInteresting.executor": "Run",
+    "JUnit.StackTest.testPeekStandard.executor": "Run",
+    "JUnit.StackTest.testPopEmptyStack.executor": "Run",
+    "JUnit.StackTest.testPopInteresting.executor": "Run",
+    "JUnit.StackTest.testPopStandard.executor": "Run",
+    "JUnit.StackTest.testPushBoundary.executor": "Run",
+    "JUnit.StackTest.testPushInteresting.executor": "Run",
+    "JUnit.StackTest.testPushStandard.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/renzi/Desktop/ArbolesBinarios/ArbolesBinarios",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="co.icesi.edu.ui.Main" />
+}]]></component>
+  <component name="RunManager" selected="JUnit.HashTableTest.testSizeBoundary">
+    <configuration name="HashTableTest.testIsEmptyBoundary" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="integrative-task-1-valquiria" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="co.icesi.edu.ui.*" />
+          <option name="PATTERN" value="co.icesi.edu.structures.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="co.icesi.edu.structures" />
+      <option name="MAIN_CLASS_NAME" value="co.icesi.edu.structures.HashTableTest" />
+      <option name="METHOD_NAME" value="testIsEmptyBoundary" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HashTableTest.testIsEmptyStandard" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="integrative-task-1-valquiria" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="co.icesi.edu.structures.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="co.icesi.edu.structures" />
+      <option name="MAIN_CLASS_NAME" value="co.icesi.edu.structures.HashTableTest" />
+      <option name="METHOD_NAME" value="testIsEmptyStandard" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HashTableTest.testRemoveInteresting" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="integrative-task-1-valquiria" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="co.icesi.edu.structures.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="co.icesi.edu.structures" />
+      <option name="MAIN_CLASS_NAME" value="co.icesi.edu.structures.HashTableTest" />
+      <option name="METHOD_NAME" value="testRemoveInteresting" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HashTableTest.testSizeBoundary" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="integrative-task-1-valquiria" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="co.icesi.edu.structures.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="co.icesi.edu.structures" />
+      <option name="MAIN_CLASS_NAME" value="co.icesi.edu.structures.HashTableTest" />
+      <option name="METHOD_NAME" value="testSizeBoundary" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HashTableTest.testSizeStandard" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="integrative-task-1-valquiria" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="co.icesi.edu.structures.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="co.icesi.edu.structures" />
+      <option name="MAIN_CLASS_NAME" value="co.icesi.edu.structures.HashTableTest" />
+      <option name="METHOD_NAME" value="testSizeStandard" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -84,15 +175,18 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.HashTableTest.testSizeBoundary" />
+        <item itemvalue="JUnit.HashTableTest.testSizeStandard" />
+        <item itemvalue="JUnit.HashTableTest.testIsEmptyBoundary" />
+        <item itemvalue="JUnit.HashTableTest.testIsEmptyStandard" />
+        <item itemvalue="JUnit.HashTableTest.testRemoveInteresting" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-1.8.0_392-corretto-1.8.0_392-f644763e9732-f719d367" />
-        <option value="jdk-20.0.2-corretto-20.0.2.1-f644763e9732-27d99999" />
+        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4" />
       </set>
     </attachedChunks>
   </component>
@@ -123,6 +217,8 @@
       <workItem from="1712771010180" duration="4795000" />
       <workItem from="1712776226411" duration="2165000" />
       <workItem from="1712779104351" duration="5609000" />
+      <workItem from="1713021511669" duration="28000" />
+      <workItem from="1713021557467" duration="1864000" />
     </task>
     <task id="LOCAL-00001" summary="initial implementation of Deck and HashTable">
       <option name="closed" value="true" />

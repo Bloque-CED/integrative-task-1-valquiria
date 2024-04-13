@@ -30,7 +30,7 @@ public class HashTable<K, V> implements IHashTable<K, V>{
      * @return the hash value for the specified key
      */
     public int hash(K key) {
-        return Math.abs(key.hashCode()) % capacity;
+        return (key == null) ? 0 : Math.abs(key.hashCode()) %capacity;
     }
 
     /**
@@ -61,6 +61,7 @@ public class HashTable<K, V> implements IHashTable<K, V>{
                 current.value = value;
             } else {
                 current.next = newNode;
+                size++;
             }
         }
     }
