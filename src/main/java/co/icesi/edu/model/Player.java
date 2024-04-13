@@ -30,6 +30,9 @@ public class Player {
         return new ArrayList<>(hand);
     }
 
+    public void setHand(List<String> hand) {
+        this.hand = hand;
+    }
     //--------------------------------------------------------------------------------------------//
 
     /**

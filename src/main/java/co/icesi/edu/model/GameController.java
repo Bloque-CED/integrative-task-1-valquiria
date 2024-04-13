@@ -366,7 +366,7 @@ public class GameController {
      * <b>post:</b> True if the game is over, false otherwise.
      * @return true if the game is over, false otherwise
      */
-    private boolean checkGameOver() {
+    public boolean checkGameOver() {
         // Obtener al jugador actual de la cola de prioridad
         Player currentPlayer = playerQueue.peek();
 
@@ -377,6 +377,20 @@ public class GameController {
             return true;
         }
         return false;
+    }
+
+    //--------------------------------------------------------------------------------------------//
+
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public PriorityQueue<Player> getPlayerQueue() {
+        return playerQueue;
+    }
+
+    public Card.Color getAuxiliaryCard() {
+        return auxiliaryCard;
     }
 }
 

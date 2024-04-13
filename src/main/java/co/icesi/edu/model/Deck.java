@@ -38,6 +38,9 @@ public class Deck {
         return cardTable;
     }
 
+    public void setPlayDeck(Stack<String> playDeck) {
+        this.playDeck = playDeck;
+    }
     //--------------------------------------------------------------------------------------------//
 
     /**
