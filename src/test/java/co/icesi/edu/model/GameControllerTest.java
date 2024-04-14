@@ -35,30 +35,70 @@ public class GameControllerTest {
         }
         gameController0.startGame(playerNames0);
     }
+
     @Before
     public void setUpSpecial() throws Exception {
         gameController1 = new GameController();
         playerNames1 = new ArrayList<>();
-        playerNames1.add("Alice");
-        playerNames1.add("Bob");
-        playerNames1.add("Carol");
+        playerNames1.add("Player 1");
+        playerNames1.add("Player 2");
         gameController1.startGame(playerNames1);
 
-        Stack<String> specialPlayDeck = new Stack<>();
-        String skipCard = new Card(Card.Color.RED, -1, Card.SpecialType.SKIP).getId();
-        String reverseCard = new Card(Card.Color.YELLOW, -1, Card.SpecialType.REVERSE).getId();
-        String drawTwoCard = new Card(Card.Color.GREEN, -1, Card.SpecialType.DRAW_TWO).getId();
+        Stack<String> playDeck = new Stack<>();
+        List<String> listCards = new ArrayList<>();
 
-        gameController1.getDeck().getCardTable().put(skipCard, new Card(Card.Color.RED, -1, Card.SpecialType.SKIP));
-        gameController1.getDeck().getCardTable().put(reverseCard, new Card(Card.Color.YELLOW, -1, Card.SpecialType.REVERSE));
-        gameController1.getDeck().getCardTable().put(drawTwoCard, new Card(Card.Color.GREEN, -1, Card.SpecialType.DRAW_TWO));
+        // cartas normales y todas rojas
+        for (Card.Color color : Card.Color.values()) {
+            if (color == Card.Color.RED) {
+                for (int number = 0; number <= 9; number++) {
+                    Card card1 = new Card(color, number, Card.SpecialType.NONE);
+                    String cardId1 = card1.getId();
+                    gameController1.getDeck().getCardTable().put(cardId1, card1);
+                    listCards.add(cardId1);
+                    gameController1.getDeck().getPlayDeck().push(cardId1);
+                }
+            }
+        }
+        // Preparar cartas especiales y añadirlas al inicio del mazo de juego
+        String block = new Card(Card.Color.RED, -1, Card.SpecialType.SKIP).getId();
+        String reverseCard = new Card(Card.Color.RED, -1, Card.SpecialType.REVERSE).getId();
+        String none = new Card(Card.Color.RED, 1, Card.SpecialType.NONE).getId();
+        String drawTwoCard = new Card(Card.Color.RED, -1, Card.SpecialType.DRAW_TWO).getId();
 
-        specialPlayDeck.push(drawTwoCard);
-        specialPlayDeck.push(reverseCard);
-        specialPlayDeck.push(skipCard);
-        gameController1.getDeck().setPlayDeck(specialPlayDeck);
+        gameController1.getDeck().getCardTable().put(block, new Card(Card.Color.RED, -1, Card.SpecialType.SKIP));
+        gameController1.getDeck().getCardTable().put(reverseCard, new Card(Card.Color.RED, -1, Card.SpecialType.REVERSE));
+        gameController1.getDeck().getCardTable().put(none, new Card(Card.Color.RED, 1, Card.SpecialType.NONE));
+        gameController1.getDeck().getCardTable().put(drawTwoCard, new Card(Card.Color.RED, -1, Card.SpecialType.DRAW_TWO));
+
+        playDeck.push(block);
+        playDeck.push(drawTwoCard);
+        playDeck.push(reverseCard);
+        playDeck.push(none);
+        // Añadir cartas
+        for (String cardId : listCards) {
+            playDeck.push(cardId);
+        }
+
+        gameController1.getDeck().setPlayDeck(playDeck);
+
+
+        List<String> hand1 = new ArrayList<>();
+        hand1.add(reverseCard); //
+        hand1.add(drawTwoCard); //
+        hand1.add(none); //
+        hand1.add(none);
+        gameController1.getPlayerQueue().peek().setHand(hand1);
+
+        gameController1.nextTurn();
+
+
+        List<String> hand2 = new ArrayList<>();
+        hand2.add(none); //
+        hand2.add(block); //
+        gameController1.getPlayerQueue().peek().setHand(hand2);
+
+        gameController1.nextTurn();
     }
-
     @Test
     public void testStartGame() {
         Assert.assertFalse(gameController.isGameOver());
@@ -171,4 +211,36 @@ public class GameControllerTest {
         Assert.assertTrue(gameController.isGameOver());
     }
 
+    // Special case
+    @Test
+    public void testSpecial() {
+        // Asumiendo que Player 1 comienza con la carta REVERSE
+
+        Assert.assertEquals("Player 2 debería comenzar el juego", "Player 2", gameController1.currentPlayer());
+
+        Assert.assertTrue("Player 2 juega la carta REVERSE", gameController1.playCard(0));
+
+
+        Assert.assertEquals("El orden de los turnos debería invertirse, por derecha e izquierda estaría el Player 1",
+                "Player 1", gameController1.currentPlayer());
+
+        Assert.assertTrue("Player 1 ", gameController1.playCard(0));
+        Assert.assertTrue("Player 2 ", gameController1.playCard(0));
+
+        // Verificar que Player 1 haya recibido dos cartas adicionales
+
+        Assert.assertTrue(gameController1.isActiveSpecialcard());
+        Assert.assertEquals("A card with a +2 effect was used against you. You received 2 cards and lost your turn.",
+                gameController1.handleSpecialCardEffect());
+        Assert.assertTrue("Player 2 ", gameController1.playCard(0));
+
+        Assert.assertEquals("Player 1 debería tener dos cartas adicionales después de DRAW TWO o sea 3", 3,
+                gameController1.getPlayerQueue().peek().getHand().size());     //getHand().size()); // Suponiendo que empezó con 1 carta
+
+        Assert.assertTrue("Player 1 ", gameController1.playCard(0)); //bloquea y gana
+        Assert.assertTrue("Player 2 ", gameController1.playCard(0));
+
+        Assert.assertTrue(gameController1.isGameOver());
+
+    }
 }
